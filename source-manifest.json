@@ -1,0 +1,591 @@
+{
+  "snapshot_date": "2026-11-16",
+  "scope": "Selected source code snapshot; not a reconstruction of early commit history.",
+  "files": [
+    {
+      "path": "_headers",
+      "sha256": "ea7566dc6d82c1ebb1164a94a9825471c2adca6abd5f6b74fed89936214e4fdb",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "about.html",
+      "sha256": "e75df25969e3483b0811a8c3cab7b620c397ed4939acc28a62b55c58d9737dc9",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "admin.html",
+      "sha256": "1349ba9261d3b98ed64f900f42fc2a6855e25be1c336a7166fe8543c0ba19bfa",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "analytics.js",
+      "sha256": "e0a708d81fc97847467e34ac4f30e81e5b41c1cad85afa16d35a001eff098688",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "app-localization.js",
+      "sha256": "857d4fc4d928254bcbccc4b5de472dd799f01629b81f396c3b6139d8cca76e01",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "app-navigation.js",
+      "sha256": "b67464cef5791941d1a188809f22889ea52b5da7a84895a6df571752d78e5778",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "app.js",
+      "sha256": "e43216241c5ba51fa8cfd34bd047a34f521c655f27fd58c9e4a3e3938a881fed",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "book-references-client.js",
+      "sha256": "bee392e7be36932618c8a3ebf799acb1d922aa68c4f17efef52c94a4150c5299",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "cards.js",
+      "sha256": "d418db3dd66427d92fa0e35619ea09720a868d1c35a6820bfe7ed726c426b5ff",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "contact.html",
+      "sha256": "036970093397fd4a63d78aaba73665a0c04a79f86730892769dde179a0ff7d23",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "draw-methods.js",
+      "sha256": "ff90a54192b86a2d9e417b824b38f7a6bd70f26f8db29a43d91267a6c8595c6f",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "experience.css",
+      "sha256": "193d978a5e4660ea894c195b983fb3c6289fe82ce3a64660dbdf038b91c3d615",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/_middleware.js",
+      "sha256": "8401547004da2beced6d6375fe1c0c00748341ab5e25cdafe71e3f920f3f6ef4",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/admin-grant.js",
+      "sha256": "9df7f646f3a51743b9f646aa985d7fba334d2dfe87e9ba8555fd604361b41e1d",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/auth-check.js",
+      "sha256": "ecc897e9181e2425db95a2d4265bc0e9fa32dd1fbc3ccfda65a8bb6102d07291",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/book-references.js",
+      "sha256": "8c3c8618bb32e3da07891786c0f3898aed0a7573d58447f0df9b05dd521ca8f0",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/daily.js",
+      "sha256": "cb6cc774208345349d56c745fc2a12c61a36295dbf2f1de3324757c452c896de",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/feedback-reward.js",
+      "sha256": "7b1029659d80801a822ed1cdbaf1283549b6e94ba2fce2cb197f6c520961da63",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/login.js",
+      "sha256": "370cfaa3cf98e0edbf8a416c07d0717614bb6b96fa91b81a991ec993c7955e9d",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/logout.js",
+      "sha256": "484513c3dfe4575432d3f8263b51ed59db3ff5acfeb5cb09bfb8e9cc3d2148fb",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/me.js",
+      "sha256": "f39864b5cb971b99213db40f244f4527274ba9a8587a31e41811f8b5418a4ad1",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/paypal/capture.js",
+      "sha256": "5c0fc700d9b029f0d9580f8ffa26c62f4b0737d9d8d4c29d5244cf3771c6bc8e",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/paypal/config.js",
+      "sha256": "2322562ddfbc721005ce5d0e7373e28ca6f3357f96fc8bd7fd1d99340d7210eb",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/paypal/create.js",
+      "sha256": "4af83b3aea3e809665de05651683efac15d6d04796dade8d6d87b16f3b2371a8",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/paypal/webhook.js",
+      "sha256": "7d937f83384415339ecdd926caa4e33111124ec71981f22fdc891ac07fc721b4",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/quota.js",
+      "sha256": "517976be1330f06333c007952610473674b9c4b1a82297987702d4d289ea28c5",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/reading.js",
+      "sha256": "7277c1c30e1193bf0f0b10fd697691d2f9a779fcb3035fd4078a90bdfd73080f",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/readings.js",
+      "sha256": "f5d5c256ec2a89aee0fbaa18f36c2e87a7fc1d00265a0fc2f19f23fdee9e3c92",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/redeem.js",
+      "sha256": "f8869e043c79bad57894de7d9162ae738e147e36c6686b41478638bb3f017e81",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/register.js",
+      "sha256": "cf03a5a02766d30d57944347c6850f3a425a39086e00d09391e1321534eaaffd",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/reset-password.js",
+      "sha256": "c4c00704fea06f78636f1003eeb24fe1d8e8be2d7ba62b1523e71849a6b93884",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/send-code.js",
+      "sha256": "b937f22f940cbd7a9dd7e648375bdc02e658fab0d33442e12709bce199e04f78",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/send-reset-code.js",
+      "sha256": "c284a784822f3ce5eeaeb127a08bf56087327918d7d4665a2795faabdeb2ca28",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/send-verify-code.js",
+      "sha256": "182876524437b5eda90a87bda3f1df060912fd821215d05216708695e46cde59",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/stats.js",
+      "sha256": "ca76171f557241bdddc1a1a1bf2c6db87525dc21193ebebdd6bda3316944dba4",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/track.js",
+      "sha256": "0f9bec454f7eb351accd853632190852aea8e57dd13e6d62c84ed4c171762175",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/verify-email.js",
+      "sha256": "2efc6b8a27dc4b220460be183c8ced34c2e225e2084787fc769d7a04171261d9",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/waitlist.js",
+      "sha256": "2f47388b908113aa714dc94c35330225dfffcec7e44200cc0b772a053bdd0687",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "functions/api/zhipu.js",
+      "sha256": "ad841aab4725a29c333724d4cbf7732bec590a21751d853574ba74cec3e7ae4d",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "guide-evidence.html",
+      "sha256": "de37f099c710e78315a858188bf3019cac70c5dcdededd924af6edfeeda76488",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "guide-followups.html",
+      "sha256": "0fa0647e4c8024684cec395f77038478873a33414f8db2518a544155ebcbe5ac",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "guide-questions.html",
+      "sha256": "e13c4f2c9f8410b36045fa31de1f85aebc851149cbf0e872a1d40b7532b505f9",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "guides.html",
+      "sha256": "210917c52ab8363b03fff27fdcd8e34cd577e79f1634534f7934d4fd5c2908a4",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "html2canvas.min.js",
+      "sha256": "e87e550794322e574a1fda0c1549a3c70dae5a93d9113417a429016838eab8cb",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "index.html",
+      "sha256": "842009047c06183de5da1320c74e9f9b5b42b476ef4cda5c4682750c31a74360",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "learning.css",
+      "sha256": "5847e6bec6c9f375f87195d471efb1bc3e16af4cdedb2b7e2ea0e4dbf60dbf31",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "learning.js",
+      "sha256": "5a4a03b658f136915d32c1e951b0d3ae4473c81acedbf86b9f2a0427710b4e6c",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "lib/adsense-site.js",
+      "sha256": "e4378adfcf8e7ce9be603556bb8bc53b47b7b1f2cfcb3b7901657c5c2684b9a8",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "lib/auth.js",
+      "sha256": "fb1fbb87cf580715a6de571308feb2bdcad1ecb2347424aee1f1aeea40c28669",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "lib/book-reference-index.js",
+      "sha256": "347825859af26b1c274bc9a52d9f44c25079419f93bff6e37b6da4be4d5c6593",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "lib/book-references.js",
+      "sha256": "260db9090cd2515f1d7dac50f84105723be13e7e6513908dd071421ea88dbe5d",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "lib/feedback-reward-mail.js",
+      "sha256": "96d50e2523382b00e0ab1961e123f00f7923952f742084aa82756393d9fb6592",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "lib/guest.js",
+      "sha256": "400e6649ae551b0fa00cdeeb769845cd46c2a71cd3082ad91c72f713001a9351",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "lib/learning-catalog.js",
+      "sha256": "695a0656c6563eb0677aacc3dd6758cd828227f318cff8a00e7f84ace8671990",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "lib/learning-site.js",
+      "sha256": "1316c4f28e7706de838e57fe79f6ac8a50dea823201394786288f98331bb87cd",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "lib/learning-visuals.js",
+      "sha256": "efebb71d86dac38d014d0d5ba2229f306a35312d7db4a5d3614fdb59a4621ba0",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "lib/mail.js",
+      "sha256": "871340330410fd37c8dc7c97a59205253c0eed7733a29255e47ac48982ad2fe5",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "lib/maintenance.js",
+      "sha256": "15c92553090d07bf05bc759b892215bc2a42e5a1d537fadc328453c168196939",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "lib/paypal.js",
+      "sha256": "e60151bc8f09c9629238fde3c286a944892101fcbf83eb32257a393a7ea154b3",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "lib/reading-billing.js",
+      "sha256": "6fe64b740e283dd3d569d2232fbcbaf35ef59ddf64bd59c76729b78aa2e7ff05",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "lib/security.js",
+      "sha256": "d8a7624fbd616649457cfcff59c97807a355e46246474983b85f44f08ea874a9",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "lib/specialist-book-index.js",
+      "sha256": "67bae6460e5a9a1e51e0ffad7d6f4d2e0d94f0b5e4d86cc934273d625d47d2d7",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "lib/stats-summary.js",
+      "sha256": "956432f4d45aff397c9ca354a165b79426e7cdf97c47323d5c9a7ba22b205a31",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "migrations/0001_reading_requests.sql",
+      "sha256": "c0143ec98e07c30035e7e40181a371e29f331bf643675cc5b07361042f4d5800",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "migrations/0002_feedback_rewards.sql",
+      "sha256": "de336eb6f0eca9cd3ef12208cd1eb97bbc4beb7d320464917791b2f5e470ad82",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "migrations/0003_paypal_orders.sql",
+      "sha256": "19c1fb706ca17e3b2079190dca186d3e0cf1f258d7325364ba954856a010d265",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "migrations/0004_pending_feedback_rewards.sql",
+      "sha256": "dcd71990042ed122174e7376fea10938afe14f0cab12cc30e6d3e7de101210f5",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "migrations/0005_query_budget.sql",
+      "sha256": "838bf187c41f8a47c592aa2b9af702798f254a9a615ec5aebce376028198ed2f",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "modern-card-notes.js",
+      "sha256": "dae1fa7581aafad9d9b197c91100e7539753ef91c9269e44d71114746cf1e8b5",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "notices-data.js",
+      "sha256": "613a5c7059e2bfe98e5be7a1fc97b7c020d87a26231238d450224396f390a29c",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "notices.css",
+      "sha256": "cb267a98f4e828944ef2f2c6a2428fe93d486ecaf04f70149b2079288cbeeb9f",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "notices.js",
+      "sha256": "e98fe4877fd27d1d70e6a05141fe7a83415ff469beae8aa845d2741a367770b3",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "package.json",
+      "sha256": "1003411233be5c6b6534835f7c9b00a2d81cba6ffb3883cf1e9e4e9680dc01e4",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "paypal-return.html",
+      "sha256": "e49726f27159c5cc31043698c5a3199b4e9ab90cca533ccc1045ac7b9e7aacc4",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "paypal-return.js",
+      "sha256": "a8e66c2f3e648346c669eb1c1a24ba1352f163954c219ca621e93292dd60cfb0",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "privacy.html",
+      "sha256": "070faefc74db00a7da1fb4fd733a4fd659e5134d00547a9ce265ffabdc95b10c",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "reading-history.js",
+      "sha256": "faf8f2cba9a34a7a36a5c65da22c2029e103a1277400555fbf25fb1b3e167588",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "reading-html.js",
+      "sha256": "c89003695e0568c53a0a3e60da266636ddbd64b8c73994c1ce2c50f1c5ffab95",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "robots.txt",
+      "sha256": "54550e15eecf956ac879500c015a360eaa4eb37edc0ea40fe6c2bcda3cce4f93",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "schema.sql",
+      "sha256": "6148aa37382affad1192265cda992a2ace9a06418658973d48c06d627350b659",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "scripts/build-learning.mjs",
+      "sha256": "04fde9a4b739f1565c026b387373293adef6f7c7d9327de68bb6ae479c6a8016",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "scripts/check.mjs",
+      "sha256": "9820fb1f294ed38e205d21461c1b1cca5be68fa5e961ee02860ca84d79581454",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "scripts/export-model-comparison.mjs",
+      "sha256": "6ff3e9f41500f29b74efae40a9ea1d4e6daa3bc675640b7795600df096001d7a",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "scripts/prepare-site.mjs",
+      "sha256": "a9639dd25f86d9d8eb3d6d01ce0b561e2916dc360d77a0e9bcce819a1e8ee37c",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "scripts/preview-site.mjs",
+      "sha256": "15546aed1512f440ef57507b5c50aa7ace716f7080f91083e7f88bcca1a38a48",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "select-fit.js",
+      "sha256": "8d73314f09be70831836ec03dd5efcc32b0c6bd05d7baf23135fe12019d07476",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "site-language.js",
+      "sha256": "03d01f3dd3dcd5a12a614f2c74bf5c9070944c7fcd51107ba72463375fed30e3",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "site.css",
+      "sha256": "b953b58fefe866947e694700723441ceacb2870dfeadd82abca0f899073f7ee5",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "sitemap.xml",
+      "sha256": "1792992de42aaf5ebb109e6e4d7c710d80143c66739a48ccac7c72b98a412f36",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "stats.html",
+      "sha256": "813281e591b71a98f66acf8ab9db96f35c3cf45e14913827ebefb261ad42b325",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/adsense-site.test.mjs",
+      "sha256": "193549829b7003ada2cb3945b635a7a29cd386cb07f5788d4369bcd9e066f28a",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/announcements.test.mjs",
+      "sha256": "c6be0f080e9dd455a885b0b7535435bf6fa80c952eabde49e556df7d1779e49f",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/billing.test.mjs",
+      "sha256": "15b662868a140f43dbcdb9a587313d8771ed93ad7bc944009cc40e0ae7657a22",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/book-references.test.mjs",
+      "sha256": "b5114263ebf2b293c739fc2e80df6d3ee2d6228ed8d6b7697770ea31acb12312",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/byok.test.mjs",
+      "sha256": "e10389897aad33f38e219a649e299a09e35c5f02ed3593a87cdd01b507e2ba1c",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/english-reasoning.test.mjs",
+      "sha256": "8dba56f5e739b1ce0c448def7ea8ffb3412a7dfd4cabebeaa0634ced9c112015",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/frontend-stream.test.mjs",
+      "sha256": "6ec755d34a0e1b88ee9f6d55e196e43ffec997c2d0587289ed377ed002e93d00",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/history.test.mjs",
+      "sha256": "7cbbb494301a59e3301c50d7c63ee4b18ad8f30773f60e40943a5bafcd764c9a",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/learning-site.test.mjs",
+      "sha256": "614dd487700c63a808d020e3c421d8a2186b6d489348017344b643d51ac5dfac",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/localization.test.mjs",
+      "sha256": "c1e5daef684308e5d33db214dba76c9c0d32de77edb947b3d4eb42d2b33e0e89",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/paypal.test.mjs",
+      "sha256": "b2c8fb70d2aad6630e528f1b2ff9c7da7cb5ee2dbdcb351aa7151c302519a30e",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/prompts.test.mjs",
+      "sha256": "7d10a7a9f5fcc5f6ecc7fa19568fba1ce106fbc059d962b2c35ba19884d8b2b5",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/rewards.test.mjs",
+      "sha256": "689d6e73c17376dfeeb180fed4b924d22e2acfdd0ddc0e204e2e219c06d31f57",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/security.test.mjs",
+      "sha256": "a8ea920009f16d1b5b3d64efcee254b71aaabb0dd1761abf66d489921ebcb24f",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/spread-recommendations.test.mjs",
+      "sha256": "9e019800b7aeef8f7ab725aff97f4c210d4514c9432294de8d3bd57a9b75120f",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/startup.test.mjs",
+      "sha256": "13531b6652512b34e021b2666efc6e5a56134de42a6253d96e7f2e0aa4397e33",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/stats-budget.test.mjs",
+      "sha256": "71e08831e63d769df47c324a2b6b0b88ad5ec98c27ec2304dbc6ade3290b9b60",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/stats-content.test.mjs",
+      "sha256": "2d173ccda3b6b812509f72f6f996c9a7d68969ab0adcc57efad5206380119e3d",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tests/support/sqlite.mjs",
+      "sha256": "905af9361ee63c2c525aa77e5160248a6bf5b4df148ef4176ea8b45b7ffa1511",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tour-copy.js",
+      "sha256": "917a92c0d7cf4b88a29466c783b29f627a39c144bf87e156a228f4c62fa9f373",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tour-steps.js",
+      "sha256": "69775418a167d0775677d540caa338eb9364215c28a9c3aaea84d0f5fb46afcd",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tour.css",
+      "sha256": "eac4d0594dec0df0e6395bbc65bb1d2df37274c27174be4d8fa8259fc5044547",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "tour.js",
+      "sha256": "a5748b2ce4df98195a920d569f446766fe73f1bb0caf86dfe1d7a43d441304e4",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "typography.css",
+      "sha256": "7e95ee04784279eb1fe2aca8184cc7af879bf5ecef554a2f71f776f0b1c71580",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "waite.js",
+      "sha256": "bf98e69a8adde318a5f8288021760791e5afb1a477fbfaef0ec1d9a179b53831",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "waite_cn.js",
+      "sha256": "d36257d9b0a3970c26a08f6ab35644f86d930da4db0055872beb3b988985939e",
+      "unchanged_from_local_source": true
+    },
+    {
+      "path": "xyj_lore.js",
+      "sha256": "c3cdabcd4b5c621def3d566b0494190e0bc4c8ae94d2366f9e47d0bac2f23d7d",
+      "unchanged_from_local_source": true
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>后台 · 发放次数</title>
+<style>
+  :root{--bg:#0d0b1a;--gold:#c9a84c;--gold2:#e8c97a;--text:#e8e0f0;--text2:#a090c0;--line:rgba(150,135,190,.25)}
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:Georgia,'Songti SC',serif;margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.2rem}
+  .box{width:100%;max-width:380px;border:1px solid var(--line);border-radius:8px;padding:1.4rem;background:rgba(26,26,46,.6)}
+  h1{font-size:1.05rem;color:var(--gold);letter-spacing:.08em;margin:0 0 1rem;font-weight:600}
+  label{display:block;font-size:.78rem;color:var(--text2);margin:.7rem 0 .25rem}
+  input{width:100%;padding:.6rem;background:rgba(13,11,26,.85);border:1px solid var(--line);border-radius:4px;color:var(--text);font-size:.9rem;font-family:inherit}
+  input:focus{outline:none;border-color:var(--gold)}
+  button{width:100%;margin-top:1.1rem;padding:.7rem;background:linear-gradient(135deg,rgba(107,63,160,.3),rgba(201,168,76,.2));border:1px solid var(--gold);color:var(--gold2);font-size:.95rem;border-radius:4px;cursor:pointer;font-family:inherit;letter-spacing:.06em}
+  button:hover{box-shadow:0 0 18px rgba(201,168,76,.2)}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  #msg{margin-top:1rem;font-size:.82rem;line-height:1.6;min-height:1.2rem;white-space:pre-wrap}
+  .ok{color:#7fd18a}.err{color:#ff9a9a}
+  .hint{font-size:.72rem;color:var(--text2);margin-top:1rem;line-height:1.6;opacity:.8}
+</style>
+</head>
+<body>
+  <div class="box">
+    <h1>✦ 发放解读次数</h1>
+    <label>后台密钥（ADMIN_TOKEN）</label>
+    <input id="token" type="password" autocomplete="off" placeholder="后台密钥">
+    <label>用户邮箱</label>
+    <input id="email" type="email" autocomplete="off" placeholder="submitter@example.com">
+    <label>发放次数（默认 5，可为负数扣减）</label>
+    <input id="credits" type="number" value="5">
+    <button id="btn" onclick="grant()">发放</button>
+    <div id="msg"></div>
+    <div class="hint">用于人工审核优质反馈后给对方账号加次数。密钥只保存在本页输入框，不上传到别处。对方需先在站内注册登录过一次。</div>
+  </div>
+<script>
+  const $ = id => document.getElementById(id);
+  // 记住密钥（仅本机浏览器，方便反复发放）
+  try { $('token').value = sessionStorage.getItem('admin_token') || ''; } catch {}
+  async function grant() {
+    const token = $('token').value.trim();
+    const email = $('email').value.trim();
+    const credits = parseInt($('credits').value, 10);
+    const msg = $('msg');
+    if (!token || !email) { msg.className = 'err'; msg.textContent = '请填写密钥和邮箱'; return; }
+    try { sessionStorage.setItem('admin_token', token); } catch {}
+    $('btn').disabled = true; msg.className = ''; msg.textContent = '发放中…';
+    try {
+      const r = await fetch('/api/admin-grant', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-admin-token': token },
+        body: JSON.stringify({ email, credits })
+      });
+      const j = await r.json();
+      if (r.ok) { msg.className = 'ok'; msg.textContent = `✓ 已给 ${j.email} ${j.credits_added>0?'加':'扣'} ${Math.abs(j.credits_added)} 次，当前余额 ${j.credits_total} 次。`; }
+      else { msg.className = 'err'; msg.textContent = '✗ ' + (j.error || ('HTTP ' + r.status)); }
+    } catch (e) {
+      msg.className = 'err'; msg.textContent = '✗ 网络错误：' + (e.message || e);
+    } finally { $('btn').disabled = false; }
+  }
+</script>
+</body>
+</html>

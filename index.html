@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>塔罗神谕 · Tarot Oracle</title>
+<meta name="description" content="塔罗神谕 · 在线塔罗牌占卜——多套精美牌面、韦特全牌义中文解读，可接入 AI 深度解卦。每日一抽，照见处境，辅助抉择。仅供娱乐与自我觉察。">
+<meta name="theme-color" content="#0f0f20">
+<link rel="canonical" href="https://www.tarot-oracle-from-joy.top/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='88'>🔮</text></svg>">
+<meta property="og:type" content="website">
+<meta property="og:title" content="塔罗神谕 · Tarot Oracle">
+<meta property="og:description" content="在线塔罗占卜，多套牌面 + 韦特全牌义中文解读，可接入 AI 深度解卦。">
+<meta property="og:image" content="og-cover.jpg">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="塔罗神谕 · Tarot Oracle">
+<meta name="twitter:image" content="og-cover.jpg">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="塔罗神谕">
+<!-- 字体：Cinzel(拉丁标题) + 思源宋体(中文)，异步非阻塞加载；不可达时回退系统衬线（见 :root --font-body） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap"></noscript>
+<script>
+// WeChat WebView cannot handle streaming API calls to external AI providers.
+// Detect and redirect immediately before any other scripts run.
+if (/MicroMessenger/i.test(navigator.userAgent)) {
+  document.addEventListener('DOMContentLoaded', function () {
+    document.body.innerHTML = [
+      '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;',
+      'min-height:100vh;background:#0d0b1a;color:#e8e0f0;font-family:Georgia,serif;',
+      'text-align:center;padding:2.5rem">',
+      '<div style="font-size:3.5rem;margin-bottom:1.2rem;',
+      'filter:drop-shadow(0 0 18px #c9a84c)">✦</div>',
+      '<h2 style="color:#c9a84c;letter-spacing:.25em;font-weight:normal;margin-bottom:1rem">',
+      '塔罗神谕</h2>',
+      '<p style="color:#a090c0;line-height:1.8;margin-bottom:2rem;font-size:.95rem">',
+      '微信浏览器不支持本站所需功能<br>请在外部浏览器中打开</p>',
+      '<div style="border:1px solid rgba(201,168,76,.4);border-radius:6px;',
+      'padding:1.2rem 1.8rem;color:#c9a84c;font-size:.88rem;line-height:2">',
+      '点击右上角 <strong>···</strong><br>选择 <strong>在浏览器中打开</strong>',
+      '</div>',
+      '<div style="font-size:2.5rem;margin-top:1.5rem;opacity:.6">↗</div>',
+      '</div>'
+    ].join('');
+  });
+}
+</script>
+<style>
+/* ── Variables ─────────────────────────────── */
+:root{
+  --bg:#0d0b1a; --bg2:#13102a; --bg3:#1a1a2e;
+  --gold:#c9a84c; --gold2:#e8c97a; --gold3:rgba(201,168,76,.15);
+  --gold-dim:#8f7d45;                 /* 暗金：次要文字/标签，避免满屏亮金 */
+  --line:rgba(150,135,190,.20);       /* 冷色细描边：容器/次要边框改用它，金色只留给选中/主按钮 */
+  --purple:#6b3fa0; --purple2:#9b6fd4;
+  --text:#e8e0f0; --text2:#a090c0;
+  --red:#c0392b;
+  --card-w:80px; --card-h:138px;
+  --card-w-lg:120px; --card-h-lg:207px;
+  /* 字体：Latin 用 Georgia/Cinzel，中文用宋体衬线（思源宋体优先，苹方/系统宋体兜底，
+     这样即使 Google Fonts 打不开——如中国大陆——中文仍是优雅的衬线，不退回默认字体） */
+  --font-body:Georgia,'Noto Serif SC','Songti SC','Source Han Serif SC','STSong','SimSun',serif;
+  --font-display:'Cinzel',Georgia,'Noto Serif SC','Songti SC','STSong',serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);min-height:100vh;overflow-x:hidden}
+
+/* ── Stars canvas ──────────────────────────── */
+#stars-canvas{position:fixed;inset:0;pointer-events:none;z-index:0}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse at 20% 50%,rgba(107,63,160,.18) 0%,transparent 60%),
+    radial-gradient(ellipse at 80% 20%,rgba(201,168,76,.09) 0%,transparent 50%);
+}
+#app{position:relative;z-index:1}
+
+/* ── INTRO ─────────────────────────────────── */
+#intro{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;text-align:center;padding:2rem;
+}
+.intro-glyph{font-size:4rem;margin-bottom:1.2rem;animation:glyphPulse 3s ease-in-out infinite}
+@keyframes glyphPulse{0%,100%{filter:drop-shadow(0 0 12px var(--gold))}50%{filter:drop-shadow(0 0 28px var(--gold2))}}
+.intro-title{
+  font-size:clamp(1.8rem,5vw,3rem);font-weight:normal;letter-spacing:.3em;
+  background:linear-gradient(135deg,var(--gold),var(--purple2),var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:.4rem;
+}
+.intro-sub{color:var(--text2);letter-spacing:.12em;margin-bottom:2.5rem;font-size:.95rem}
+.lang-row{display:flex;gap:1.2rem;margin-bottom:2.5rem}
+.lang-btn{
+  padding:.7rem 2.2rem;border:1px solid var(--gold);background:transparent;
+  color:var(--gold);cursor:pointer;font-family:var(--font-body);font-size:.95rem;
+  letter-spacing:.1em;transition:all .3s;border-radius:2px;
+}
+.lang-btn:hover,.lang-btn.active{background:var(--gold);color:var(--bg);font-weight:bold}
+.enter-btn{
+  padding:1rem 3rem;border:1px solid var(--gold);
+  background:linear-gradient(135deg,rgba(201,168,76,.1),rgba(107,63,160,.1));
+  color:var(--gold2);cursor:pointer;font-family:var(--font-body);font-size:1.1rem;
+  letter-spacing:.2em;transition:all .4s;border-radius:2px;
+}
+.enter-btn:hover{
+  background:linear-gradient(135deg,rgba(201,168,76,.22),rgba(107,63,160,.22));
+  box-shadow:0 0 32px rgba(201,168,76,.28);
+}
+
+/* ── MAIN ──────────────────────────────────── */
+#main{display:none;flex-direction:column;min-height:100vh}
+
+/* Header */
+.header{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;
+  padding:.9rem 1.8rem;border-bottom:1px solid rgba(201,168,76,.2);
+  background:rgba(13,11,26,.85);backdrop-filter:blur(12px);
+  position:sticky;top:0;z-index:200;
+}
+.header-title{font-size:1.1rem;letter-spacing:.18em;color:#bfa968}
+.header-actions{display:flex;align-items:center;gap:.7rem}
+.header-primary{display:flex;align-items:center;gap:.45rem}
+.header-menu{position:relative}
+.header-menu summary{list-style:none;display:flex;align-items:center;gap:.4rem;min-height:40px;padding:.38rem .7rem;border:1px solid rgba(201,168,76,.28);border-radius:2px;color:var(--text2);font-size:.8rem;cursor:pointer;user-select:none}
+.header-menu summary::-webkit-details-marker{display:none}
+.header-menu summary:hover,.header-menu[open] summary,.header-menu.has-active summary{border-color:var(--gold);color:var(--gold)}
+.header-menu-popover{position:absolute;right:0;top:calc(100% + .5rem);width:220px;max-width:calc(100vw - 24px);padding:.4rem;background:#171322;border:1px solid rgba(201,168,76,.28);border-radius:5px;box-shadow:0 14px 32px rgba(0,0,0,.45);z-index:210}
+.header-menu-popover .menu-link{display:block;width:100%;min-height:40px;padding:.55rem .75rem;border:0;border-radius:3px;background:transparent;color:var(--text);font:inherit;font-size:.83rem;text-align:left;text-decoration:none;cursor:pointer}
+.header-menu-popover .menu-link:hover,.header-menu-popover .menu-link:focus-visible,.header-menu-popover .menu-link.active{background:rgba(201,168,76,.1);color:var(--gold)}
+.nav-btn{
+  padding:.38rem .9rem;border:1px solid rgba(201,168,76,.3);background:transparent;
+  color:var(--text2);cursor:pointer;font-family:var(--font-body);font-size:.8rem;
+  letter-spacing:.05em;transition:all .3s;border-radius:2px;
+}
+.nav-btn:hover,.nav-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.1)}
+.settings-btn{
+  padding:.38rem .7rem;border:1px solid rgba(155,111,212,.4);background:transparent;
+  color:var(--purple2);cursor:pointer;font-size:1rem;border-radius:2px;transition:all .3s;
+}
+.settings-btn:hover{background:rgba(107,63,160,.2)}
+.help-btn{
+  padding:.38rem .62rem;border:1px solid rgba(120,180,200,.35);background:transparent;
+  color:rgba(160,210,230,.8);cursor:pointer;font-family:var(--font-body);font-size:.78rem;
+  letter-spacing:.04em;border-radius:2px;transition:all .3s;white-space:nowrap;text-decoration:none;
+  display:inline-flex;align-items:center;gap:.3rem;
+}
+.help-btn:hover{background:rgba(120,180,200,.1);border-color:rgba(160,210,230,.7);color:rgba(160,210,230,1)}
+/* Panels */
+.panel{display:none;padding:1.5rem 1.8rem 3rem}
+.panel.active{display:block}
+
+/* ── READING PANEL ─────────────────────────── */
+/* Controls bar */
+.controls-bar{
+  max-width:860px;margin:0 auto 1.5rem;
+  background:rgba(26,26,46,.65);border:1px solid var(--line);
+  padding:1.5rem;border-radius:4px;backdrop-filter:blur(6px);
+}
+.section-label{
+  font-size:.7rem;letter-spacing:.2em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:.7rem
+}
+.spread-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.55rem;margin-bottom:1rem}
+.spread-btn{
+  padding:.55rem .3rem;border:1px solid var(--line);background:rgba(107,63,160,.06);
+  color:var(--text2);cursor:pointer;font-family:var(--font-body);
+  text-align:center;transition:all .3s;border-radius:2px;position:relative;
+}
+.spread-btn:hover,.spread-btn.active{
+  border-color:var(--gold);color:var(--gold2);
+  background:rgba(201,168,76,.10);box-shadow:0 0 14px rgba(201,168,76,.1)
+}
+.spread-btn.recommended::after{
+  content:'★';position:absolute;top:-6px;right:-4px;font-size:.6rem;color:var(--gold);
+  background:var(--bg);padding:0 2px;line-height:1;
+}
+.spread-btn .si{font-size:1.1rem;display:block;margin-bottom:.15rem}
+.spread-btn .sn{font-size:.68rem;display:block}
+.spread-btn .sc{font-size:.55rem;display:block;color:var(--text2);opacity:.6;margin-top:.1rem}
+.spread-recommend{
+  font-size:.75rem;color:#c9b57a;margin-bottom:.6rem;padding:.45rem .7rem;
+  border:1px solid var(--line);border-radius:2px;background:rgba(107,63,160,.05);
+  line-height:1.5;
+}
+.spread-desc{
+  font-size:.7rem;color:var(--text2);text-align:center;min-height:1.2rem;margin-bottom:.6rem;opacity:.7;
+}
+/* 首屏只显示常用牌阵，其余折叠进"更多牌阵" */
+.spread-grid:not(.expanded) .spread-advanced{display:none}
+.spread-more-btn{
+  display:block;margin:-.3rem auto 1rem;padding:.35rem 1rem;
+  background:none;border:none;color:var(--gold-dim);cursor:pointer;
+  font-family:var(--font-body);font-size:.75rem;letter-spacing:.1em;
+  transition:color .25s;
+}
+.spread-more-btn:hover{color:var(--gold)}
+.question-input{
+  width:100%;padding:.75rem 1rem;background:rgba(13,11,26,.85);
+  border:1px solid var(--line);color:var(--text);
+  font-family:var(--font-body);font-size:.9rem;border-radius:2px;
+  resize:none;margin-bottom:1.2rem;outline:none;transition:border-color .3s;
+}
+.question-input:focus{border-color:var(--gold)}
+.question-input::placeholder{color:var(--text2)}
+.shuffle-btn{
+  display:block;width:100%;padding:.9rem;
+  background:linear-gradient(135deg,rgba(107,63,160,.28),rgba(201,168,76,.18));
+  border:1px solid var(--gold);color:var(--gold2);cursor:pointer;
+  font-family:var(--font-body);font-size:1rem;letter-spacing:.14em;
+  transition:all .4s;border-radius:2px;
+  box-shadow:0 0 0 1px rgba(201,168,76,.12),0 6px 22px rgba(201,168,76,.08);
+}
+.shuffle-btn:hover{
+  background:linear-gradient(135deg,rgba(107,63,160,.45),rgba(201,168,76,.28));
+  box-shadow:0 0 26px rgba(201,168,76,.22);
+}
+.shuffle-btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* ── FAN STAGE ─────────────────────────────── */
+#fan-stage-wrap{
+  position:relative;width:100%;max-width:860px;margin:0 auto;
+  height:340px;display:none;
+}
+.fan-instruction{
+  text-align:center;color:var(--text2);font-size:.8rem;letter-spacing:.1em;
+  margin-bottom:.6rem;font-style:italic;
+}
+#fan-stage{
+  position:relative;width:100%;height:100%;
+  display:flex;align-items:flex-end;justify-content:center;overflow:visible;
+}
+
+/* Individual fan card */
+.fan-card{
+  position:absolute;
+  width:var(--card-w);height:var(--card-h);
+  border-radius:6px;cursor:pointer;
+  transform-origin:bottom center;
+  transition:transform .25s ease,filter .25s ease,z-index 0s;
+  will-change:transform;
+  bottom:0;
+}
+.fan-card .fc-back{
+  width:100%;height:100%;border-radius:7px;
+  background:radial-gradient(130% 90% at 50% -10%, #2a1f57 0%, #191231 52%, #0c0a1e 100%);
+  border:1px solid rgba(201,168,76,.42);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:
+    inset 0 0 0 3px rgba(12,10,30,.65),
+    inset 0 0 14px rgba(0,0,0,.5),
+    0 4px 12px rgba(0,0,0,.45);
+  overflow:hidden;position:relative;
+}
+.fan-card .fc-back::before{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(155deg, rgba(255,255,255,.06), transparent 42%),
+    radial-gradient(circle at 50% 40%, rgba(201,168,76,.16) 0%, transparent 58%);
+}
+.fan-card .fc-back-inner{
+  width:70%;height:80%;
+  border:1px solid rgba(201,168,76,.34);
+  border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;position:relative;z-index:1;
+  color:var(--gold2);
+  box-shadow:inset 0 0 10px rgba(201,168,76,.06);
+  background:transparent;
+}
+.fan-card:hover{z-index:100 !important}
+/* 双行弧形扇面（摊牌/展扇）：宽高、牌尺寸、溢出均由 JS 内联控制，这里只管滚动条与交互态 */
+#fan-stage-wrap.arc-scroll{
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;position:relative;
+}
+#fan-stage-wrap.arc-scroll::-webkit-scrollbar{display:none}
+#fan-stage.arc-scroll-stage{
+  position:relative;display:block;padding:0;min-width:max-content;
+}
+.fan-card.arc-card{
+  transition:transform .16s ease,box-shadow .16s ease;
+  /* 卡与卡之间的分隔：右下投影 + 微亮上缘，重叠时能看清"一张压一张" */
+  filter:drop-shadow(2px 1px 2px rgba(0,0,0,.6));
+}
+.fan-card.arc-card .fc-back{box-shadow:inset 1px 1px 0 rgba(232,201,122,.18)}
+.fan-card.arc-card:active:not(.drawn){
+  filter:drop-shadow(0 0 12px rgba(232,201,122,.95));
+  z-index:100001 !important;
+}
+.fan-card.arc-card.drawn{opacity:.3}
+/* 整齐网格模式（手机可选）：靠间距分隔，点按微亮 */
+.fan-card.grid-card{transition:filter .15s ease,transform .15s ease}
+.fan-card.grid-card .fc-back{box-shadow:0 1px 3px rgba(0,0,0,.5)}
+.fan-card.grid-card:active:not(.drawn){filter:drop-shadow(0 0 8px rgba(232,201,122,.9));transform:scale(.96)}
+.fan-card.grid-card.drawn{opacity:.3}
+/* 扇形/网格 切换开关 */
+.fanmode-btn{
+  padding:.3rem .9rem;border:1px solid var(--line);background:rgba(107,63,160,.06);
+  color:var(--text2);cursor:pointer;font-family:var(--font-body);font-size:.75rem;
+  border-radius:999px;transition:all .25s;letter-spacing:.03em;
+}
+.fanmode-btn.active{border-color:var(--gold);color:var(--gold2);background:rgba(201,168,76,.1)}
+.fc-back-img{width:100%;height:100%;object-fit:cover;border-radius:5px;display:block}
+.cf-back-img{width:100%;height:100%;object-fit:cover;border-radius:5px;display:block}
+
+/* fly-out animation */
+@keyframes flyToSlot{
+  0%  {transform:var(--start-transform) scale(1)}
+  40% {transform:var(--start-transform) scale(1.15) translateY(-60px)}
+  100%{transform:translate(var(--tx),var(--ty)) scale(var(--ts))}
+}
+.fan-card.flying{
+  animation:flyToSlot .55s cubic-bezier(.4,0,.2,1) forwards;
+  pointer-events:none;z-index:300 !important;
+}
+
+/* ── SELECTED CARDS ROW ────────────────────── */
+#selected-row{
+  max-width:860px;margin:1.2rem auto 0;
+  display:none;
+}
+.selected-label{
+  text-align:center;color:var(--text2);font-size:.75rem;
+  letter-spacing:.15em;text-transform:uppercase;margin-bottom:.8rem;
+}
+.selected-slots{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:1rem;
+}
+/* Celtic Cross cross-shaped grid — use base card size so 4 rows fit in viewport */
+:root{ --card-w-ct:82px; --card-h-ct:141px; }
+.selected-slots.celtic-layout{
+  display:grid;
+  grid-template-columns:repeat(4,var(--card-w-ct)) calc(var(--card-w-ct) + 20px);
+  grid-template-rows:repeat(4,var(--card-h-ct));
+  gap:8px 8px;
+  justify-content:center;
+}
+.selected-slots.celtic-layout .card-flip-wrap{width:var(--card-w-ct);height:var(--card-h-ct)}
+.selected-slots.celtic-layout .sel-slot:nth-child(1){grid-column:2;grid-row:2}
+.selected-slots.celtic-layout .sel-slot:nth-child(2){grid-column:3;grid-row:2}
+.selected-slots.celtic-layout .sel-slot:nth-child(3){grid-column:2;grid-row:3}
+.selected-slots.celtic-layout .sel-slot:nth-child(4){grid-column:1;grid-row:2}
+.selected-slots.celtic-layout .sel-slot:nth-child(5){grid-column:2;grid-row:1}
+.selected-slots.celtic-layout .sel-slot:nth-child(6){grid-column:4;grid-row:2}
+.selected-slots.celtic-layout .sel-slot:nth-child(7){grid-column:5;grid-row:4}
+.selected-slots.celtic-layout .sel-slot:nth-child(8){grid-column:5;grid-row:3}
+.selected-slots.celtic-layout .sel-slot:nth-child(9){grid-column:5;grid-row:2}
+.selected-slots.celtic-layout .sel-slot:nth-child(10){grid-column:5;grid-row:1}
+.sel-slot{
+  display:flex;flex-direction:column;align-items:center;gap:.4rem;
+}
+.sel-pos-label{font-size:.65rem;color:var(--text2);letter-spacing:.08em;text-align:center;text-transform:uppercase}
+
+/* Card name label shown after flip */
+.cf-name-label{
+  font-size:.68rem;color:var(--gold2);text-align:center;margin-top:.3rem;
+  max-width:var(--card-w-lg);line-height:1.3;
+}
+.cf-rev-tag{color:var(--red);font-size:.6rem;margin-left:.2rem}
+.selected-slots.celtic-layout .cf-name-label{max-width:var(--card-w-ct);font-size:.58rem}
+
+/* Empty slot placeholder (dotted outline before card is drawn) */
+.card-placeholder{
+  width:var(--card-w-lg);height:var(--card-h-lg);
+  border:2px dashed rgba(201,168,76,.3);
+  border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(201,168,76,.03);
+}
+.selected-slots.celtic-layout .card-placeholder{
+  width:var(--card-w-ct);height:var(--card-h-ct);
+}
+/* Pentagram: 5 points — top(centre), upper-right, lower-right, lower-left, upper-left */
+.selected-slots.pentagram-layout{
+  display:grid;
+  grid-template-columns:repeat(3,calc(var(--card-w-ct) + 12px));
+  grid-template-rows:repeat(3,auto);
+  gap:8px;justify-content:center;
+}
+/* positions: Present(top-centre), Challenge(right), Future(lower-right), Past(lower-left), Subconscious(left) */
+.selected-slots.pentagram-layout .sel-slot:nth-child(1){grid-column:2;grid-row:1}
+.selected-slots.pentagram-layout .sel-slot:nth-child(2){grid-column:3;grid-row:2}
+.selected-slots.pentagram-layout .sel-slot:nth-child(3){grid-column:3;grid-row:3}
+.selected-slots.pentagram-layout .sel-slot:nth-child(4){grid-column:1;grid-row:3}
+.selected-slots.pentagram-layout .sel-slot:nth-child(5){grid-column:1;grid-row:2}
+.selected-slots.pentagram-layout .card-flip-wrap{width:var(--card-w-ct);height:var(--card-h-ct)}
+.selected-slots.pentagram-layout .card-placeholder{width:var(--card-w-ct);height:var(--card-h-ct)}
+.selected-slots.pentagram-layout .cf-name-label{max-width:var(--card-w-ct);font-size:.58rem}
+/* Love Cross: cross shape — center, top, right, bottom, left */
+.selected-slots.lovecross-layout{
+  display:grid;
+  grid-template-columns:repeat(3,var(--card-w-ct));
+  grid-template-rows:repeat(3,auto);
+  gap:8px;justify-content:center;
+}
+.selected-slots.lovecross-layout .sel-slot:nth-child(1){grid-column:1;grid-row:2}
+.selected-slots.lovecross-layout .sel-slot:nth-child(2){grid-column:3;grid-row:2}
+.selected-slots.lovecross-layout .sel-slot:nth-child(3){grid-column:2;grid-row:2}
+.selected-slots.lovecross-layout .sel-slot:nth-child(4){grid-column:2;grid-row:1}
+.selected-slots.lovecross-layout .sel-slot:nth-child(5){grid-column:2;grid-row:3}
+.selected-slots.lovecross-layout .card-flip-wrap{width:var(--card-w-ct);height:var(--card-h-ct)}
+.selected-slots.lovecross-layout .card-placeholder{width:var(--card-w-ct);height:var(--card-h-ct)}
+.selected-slots.lovecross-layout .cf-name-label{max-width:var(--card-w-ct);font-size:.58rem}
+/* Two Choices: fork shape — center top, then two columns */
+.selected-slots.twochoices-layout{
+  display:grid;
+  grid-template-columns:repeat(2,calc(var(--card-w-ct) + 20px));
+  grid-template-rows:repeat(3,auto);
+  gap:8px 24px;justify-content:center;
+}
+.selected-slots.twochoices-layout .sel-slot:nth-child(1){grid-column:1/3;grid-row:1;justify-self:center}
+.selected-slots.twochoices-layout .sel-slot:nth-child(2){grid-column:1;grid-row:2}
+.selected-slots.twochoices-layout .sel-slot:nth-child(3){grid-column:1;grid-row:3}
+.selected-slots.twochoices-layout .sel-slot:nth-child(4){grid-column:2;grid-row:2}
+.selected-slots.twochoices-layout .sel-slot:nth-child(5){grid-column:2;grid-row:3}
+.selected-slots.twochoices-layout .card-flip-wrap{width:var(--card-w-ct);height:var(--card-h-ct)}
+.selected-slots.twochoices-layout .card-placeholder{width:var(--card-w-ct);height:var(--card-h-ct)}
+.selected-slots.twochoices-layout .cf-name-label{max-width:var(--card-w-ct);font-size:.58rem}
+/* Horseshoe: arc of 7 */
+.selected-slots.horseshoe-layout{
+  display:grid;
+  grid-template-columns:repeat(7,var(--card-w-ct));
+  gap:4px;justify-content:center;align-items:end;
+}
+.selected-slots.horseshoe-layout .sel-slot:nth-child(1){transform:translateY(-8px)}
+.selected-slots.horseshoe-layout .sel-slot:nth-child(2){transform:translateY(-20px)}
+.selected-slots.horseshoe-layout .sel-slot:nth-child(3){transform:translateY(-28px)}
+.selected-slots.horseshoe-layout .sel-slot:nth-child(4){transform:translateY(-32px)}
+.selected-slots.horseshoe-layout .sel-slot:nth-child(5){transform:translateY(-28px)}
+.selected-slots.horseshoe-layout .sel-slot:nth-child(6){transform:translateY(-20px)}
+.selected-slots.horseshoe-layout .sel-slot:nth-child(7){transform:translateY(-8px)}
+.selected-slots.horseshoe-layout .card-flip-wrap{width:var(--card-w-ct);height:var(--card-h-ct)}
+.selected-slots.horseshoe-layout .card-placeholder{width:var(--card-w-ct);height:var(--card-h-ct)}
+.selected-slots.horseshoe-layout .cf-name-label{max-width:var(--card-w-ct);font-size:.54rem}
+/* Life Tree: Kabbalistic tree shape */
+.selected-slots.lifetree-layout{
+  display:grid;
+  grid-template-columns:repeat(3,calc(var(--card-w-ct) + 8px));
+  grid-template-rows:repeat(5,auto);
+  gap:6px;justify-content:center;
+}
+.selected-slots.lifetree-layout .sel-slot:nth-child(1){grid-column:2;grid-row:1}
+.selected-slots.lifetree-layout .sel-slot:nth-child(2){grid-column:1;grid-row:2}
+.selected-slots.lifetree-layout .sel-slot:nth-child(3){grid-column:3;grid-row:2}
+.selected-slots.lifetree-layout .sel-slot:nth-child(4){grid-column:1;grid-row:3}
+.selected-slots.lifetree-layout .sel-slot:nth-child(5){grid-column:3;grid-row:3}
+.selected-slots.lifetree-layout .sel-slot:nth-child(6){grid-column:2;grid-row:3}
+.selected-slots.lifetree-layout .sel-slot:nth-child(7){grid-column:1;grid-row:4}
+.selected-slots.lifetree-layout .sel-slot:nth-child(8){grid-column:3;grid-row:4}
+.selected-slots.lifetree-layout .sel-slot:nth-child(9){grid-column:2;grid-row:4}
+.selected-slots.lifetree-layout .sel-slot:nth-child(10){grid-column:2;grid-row:5}
+.selected-slots.lifetree-layout .card-flip-wrap{width:var(--card-w-ct);height:var(--card-h-ct)}
+.selected-slots.lifetree-layout .card-placeholder{width:var(--card-w-ct);height:var(--card-h-ct)}
+.selected-slots.lifetree-layout .cf-name-label{max-width:var(--card-w-ct);font-size:.54rem}
+
+/* Card flip container */
+.card-flip-wrap{
+  width:var(--card-w-lg);height:var(--card-h-lg);
+  perspective:900px;cursor:default;
+}
+.card-flip-inner{
+  width:100%;height:100%;position:relative;
+  transform-style:preserve-3d;
+  transition:transform .75s cubic-bezier(.4,0,.2,1);
+}
+.card-flip-wrap.flipped .card-flip-inner{transform:rotateY(180deg)}
+.cf-back,.cf-front{
+  position:absolute;width:100%;height:100%;
+  backface-visibility:hidden;border-radius:6px;overflow:hidden;
+}
+.cf-back{
+  background:radial-gradient(130% 90% at 50% -10%, #2a1f57 0%, #191231 52%, #0c0a1e 100%);
+  border:1px solid rgba(201,168,76,.42);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  box-shadow:
+    inset 0 0 0 3px rgba(12,10,30,.65),
+    inset 0 0 14px rgba(0,0,0,.5);
+}
+.cf-back::before{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(155deg, rgba(255,255,255,.06), transparent 42%),
+    radial-gradient(circle at 50% 40%, rgba(201,168,76,.16) 0%, transparent 58%);
+}
+.cf-back-inner{
+  width:72%;height:82%;
+  border:1px solid rgba(201,168,76,.34);
+  border-radius:4px;
+  display:flex;align-items:center;justify-content:center;font-size:1.8rem;
+  position:relative;z-index:1;color:var(--gold2);
+  box-shadow:inset 0 0 12px rgba(201,168,76,.06);
+  background:transparent;
+}
+/* ── Image skeleton ─────────────────────────── */
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.img-skeleton{
+  background:linear-gradient(90deg,rgba(201,168,76,.05) 25%,rgba(201,168,76,.12) 50%,rgba(201,168,76,.05) 75%);
+  background-size:200% 100%;
+  animation:shimmer 1.4s ease-in-out infinite;
+}
+.cf-front{
+  transform:rotateY(180deg);
+  border:2px solid var(--gold);
+  background:#111;
+}
+.cf-front img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.cf-front.reversed img{transform:rotate(180deg)}
+.cf-reversed-tag{
+  position:absolute;bottom:4px;left:50%;transform:translateX(-50%);
+  font-size:.55rem;color:var(--red);
+  background:rgba(0,0,0,.75);border:1px solid rgba(192,57,43,.5);
+  padding:.1rem .4rem;border-radius:2px;white-space:nowrap;z-index:2;
+}
+
+/* Reveal all button */
+#reveal-btn{
+  display:none;
+  margin:1.2rem auto 0;
+  padding:.8rem 2.5rem;border:1px solid var(--gold);
+  background:rgba(201,168,76,.12);color:var(--gold2);
+  cursor:pointer;font-family:var(--font-body);font-size:.95rem;letter-spacing:.12em;
+  border-radius:2px;transition:all .35s;
+}
+#reveal-btn:hover{background:rgba(201,168,76,.22);box-shadow:0 0 22px rgba(201,168,76,.2)}
+
+/* ── READING OUTPUT ────────────────────────── */
+#readings-output{
+  max-width:860px;margin:2rem auto 0;
+}
+.reading-divider{
+  text-align:center;color:rgba(201,168,76,.3);
+  letter-spacing:.6em;margin:1.5rem 0;font-size:.75rem;
+}
+.rcb{
+  background:rgba(26,26,46,.72);border:1px solid rgba(201,168,76,.18);
+  border-radius:4px;padding:1.4rem;margin-bottom:1.2rem;
+  animation:fadeUp .55s ease both;backdrop-filter:blur(4px);
+}
+.rcb.upright{border-left:3px solid var(--gold)}
+.rcb.reversed{border-left:3px solid var(--red)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.rcb-head{display:flex;align-items:flex-start;gap:1.2rem;margin-bottom:.9rem}
+.rcb-img{
+  width:60px;height:103px;border-radius:4px;
+  border:1px solid rgba(201,168,76,.3);object-fit:cover;flex-shrink:0;
+}
+.rcb-img.reversed-img{transform:rotate(180deg)}
+.rcb-meta{}
+.rcb-pos{font-size:.65rem;color:var(--text2);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.25rem}
+.rcb-title{font-size:1rem;color:var(--gold);letter-spacing:.05em}
+.rcb-rev{
+  display:inline-block;font-size:.65rem;color:var(--red);
+  border:1px solid rgba(192,57,43,.4);padding:.1rem .45rem;
+  border-radius:2px;margin-left:.5rem;vertical-align:middle;
+}
+.rcb-kws{display:flex;flex-wrap:wrap;gap:.35rem;margin:.6rem 0}
+.kw{
+  font-size:.68rem;padding:.18rem .55rem;
+  border:1px solid rgba(201,168,76,.28);border-radius:12px;
+  color:var(--text2);background:rgba(201,168,76,.06);
+}
+.rcb-meaning{line-height:1.85;color:var(--text);font-size:.88rem}
+.rcb-meaning-cn{line-height:1.85;color:var(--text2);font-size:.83rem;margin-top:.5rem;font-style:italic}
+
+/* Overall summary block */
+.summary-block{
+  background:linear-gradient(135deg,rgba(107,63,160,.18),rgba(201,168,76,.08));
+  border:1px solid rgba(155,111,212,.35);border-radius:4px;
+  padding:1.4rem;margin-bottom:1.2rem;
+  animation:fadeUp .55s .1s ease both;
+}
+.summary-block h3{color:var(--purple2);letter-spacing:.1em;margin-bottom:.8rem;font-size:.95rem}
+.summary-text{line-height:1.9;color:var(--text);font-size:.88rem}
+.summary-text-cn{line-height:1.9;color:var(--text2);font-size:.83rem;margin-top:.5rem;font-style:italic}
+/* 解读后反馈邀请行 */
+.feedback-line{margin-top:1rem;padding-top:.8rem;border-top:1px solid var(--line);font-size:.8rem;color:var(--text2);line-height:1.6}
+.feedback-line a{color:var(--gold2);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.feedback-line a:hover{color:var(--gold)}
+/* AI 输出里的 Markdown 渲染 */
+.summary-text strong,.msg strong{color:var(--gold2);font-weight:600}
+.summary-text .ai-h,.msg .ai-h{display:block;color:var(--gold2);font-weight:600;margin:.7em 0 .25em;letter-spacing:.02em}
+
+/* ── AI CHAT ───────────────────────────────── */
+#chat-section{
+  max-width:860px;margin:1.5rem auto 3rem;
+  background:rgba(19,16,42,.8);border:1px solid rgba(155,111,212,.28);
+  border-radius:4px;overflow:hidden;display:none;
+  backdrop-filter:blur(6px);
+}
+.chat-header{
+  padding:.8rem 1.2rem;background:rgba(107,63,160,.18);
+  border-bottom:1px solid rgba(155,111,212,.2);
+  display:flex;align-items:center;gap:.6rem;
+}
+.chat-header-icon{font-size:1.1rem}
+.chat-header-title{color:var(--purple2);font-size:.85rem;letter-spacing:.1em}
+.chat-header-model{font-size:.7rem;color:var(--text2);margin-left:auto}
+#chat-messages{
+  padding:1rem;max-height:380px;overflow-y:auto;
+  display:flex;flex-direction:column;gap:.8rem;
+}
+.msg{
+  max-width:85%;padding:.75rem 1rem;border-radius:4px;
+  font-size:.85rem;line-height:1.75;
+}
+.msg.oracle{
+  align-self:flex-start;
+  background:rgba(107,63,160,.18);border:1px solid rgba(155,111,212,.25);
+  color:var(--text);
+}
+.msg.user{
+  align-self:flex-end;
+  background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);
+  color:var(--gold2);
+}
+.msg.thinking{
+  align-self:flex-start;color:var(--text2);font-style:italic;font-size:.8rem;
+  background:rgba(26,26,46,.5);border:1px solid rgba(201,168,76,.1);
+}
+.chat-input-row{
+  display:flex;gap:.5rem;padding:.8rem 1rem;
+  border-top:1px solid rgba(155,111,212,.18);
+}
+#chat-input{
+  flex:1;padding:.65rem .9rem;background:rgba(13,11,26,.9);
+  border:1px solid rgba(155,111,212,.3);color:var(--text);
+  font-family:var(--font-body);font-size:.85rem;border-radius:2px;outline:none;
+  transition:border-color .3s;
+}
+#chat-input:focus{border-color:var(--purple2)}
+#chat-input::placeholder{color:var(--text2)}
+#chat-send{
+  padding:.65rem 1.2rem;border:1px solid var(--purple2);
+  background:rgba(107,63,160,.2);color:var(--purple2);
+  cursor:pointer;font-family:var(--font-body);font-size:.85rem;
+  border-radius:2px;transition:all .3s;white-space:nowrap;
+}
+#chat-send:hover{background:rgba(107,63,160,.38)}
+#chat-send:disabled{opacity:.4;cursor:not-allowed}
+.back-to-cards-btn{
+  display:inline-flex;align-items:center;gap:.45rem;
+  margin:1.2rem auto 0;padding:.55rem 1.4rem;
+  background:transparent;border:1px solid rgba(201,168,76,.28);
+  color:rgba(201,168,76,.7);cursor:pointer;font-family:var(--font-body);font-size:.78rem;
+  letter-spacing:.12em;border-radius:2px;transition:all .3s;
+  text-decoration:none;
+}
+.back-to-cards-btn:hover{background:rgba(201,168,76,.1);color:var(--gold)}
+/* Slots become jump-links after reveal */
+.sel-slot.revealed .card-flip-wrap{cursor:pointer}
+.sel-slot.revealed .card-flip-wrap:hover .cf-front{
+  filter:drop-shadow(0 0 10px rgba(201,168,76,.6));
+}
+.save-reading-btn{
+  display:block;width:fit-content;margin:0 auto 1rem;
+  padding:.75rem 2rem;border:1px solid rgba(155,111,212,.4);
+  background:rgba(107,63,160,.14);color:var(--purple2);
+  cursor:pointer;font-family:var(--font-body);font-size:.85rem;letter-spacing:.1em;
+  border-radius:2px;transition:all .3s;
+}
+.save-reading-btn:hover{background:rgba(107,63,160,.28)}
+
+/* ── GUIDE MODAL ─────────────────────────────── */
+#guide-modal{
+  display:none;position:fixed;inset:0;z-index:500;
+  background:rgba(0,0,0,.8);backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;
+}
+#guide-modal.open{display:flex}
+.guide-box{
+  background:var(--bg2);border:1px solid rgba(201,168,76,.25);
+  border-radius:6px;padding:1.5rem;width:min(440px,94vw);
+  position:relative;max-height:88vh;overflow-y:auto;
+}
+.guide-heading{display:flex;align-items:center;gap:.75rem;padding-right:1.2rem;margin-bottom:.35rem}
+.guide-heading h2{margin:0;color:var(--gold);font-size:1.05rem;font-weight:600;line-height:1.4}
+.guide-back{border:0;background:none;color:var(--text2);font:inherit;font-size:.8rem;cursor:pointer;padding:.2rem 0;white-space:nowrap}
+.guide-back:hover{color:var(--gold)}
+.guide-intro{margin:.15rem 0 1.05rem;color:var(--text2);font-size:.82rem;line-height:1.6}
+.guide-directory{display:grid;gap:.5rem}
+.guide-topic{display:flex;align-items:center;justify-content:space-between;gap:.8rem;width:100%;padding:.72rem .85rem;border:1px solid rgba(201,168,76,.2);border-radius:4px;background:rgba(201,168,76,.035);color:var(--text);font:inherit;text-align:left;cursor:pointer}
+.guide-topic:hover,.guide-topic:focus-visible{border-color:var(--gold);background:rgba(201,168,76,.09)}
+.guide-topic strong{display:block;font-size:.9rem;font-weight:600;line-height:1.45}
+.guide-topic small{display:block;margin-top:.1rem;color:var(--text2);font-size:.73rem;line-height:1.4}
+.guide-topic .guide-chevron{color:var(--gold);font-size:1rem;flex:none}
+#guide-detail ol{margin:.4rem 0 1rem;padding-left:1.35rem;color:var(--text);font-size:.88rem;line-height:1.7}
+#guide-detail li{padding-left:.15rem;margin-bottom:.85rem}
+#guide-detail li::marker{color:var(--gold)}
+.guide-faq{display:block;margin-top:1rem;padding-top:.8rem;border-top:1px solid rgba(201,168,76,.18);color:var(--gold);font-size:.8rem;text-decoration:none}
+.guide-faq:hover{text-decoration:underline}
+.guide-directory[hidden],#guide-detail[hidden],#guide-back[hidden],#guide-faq[hidden],#guide-intro[hidden]{display:none!important}
+.guide-open-btn{
+  background:none;border:1px solid rgba(201,168,76,.2);color:var(--text2);
+  cursor:pointer;font-family:var(--font-body);font-size:.7rem;letter-spacing:.1em;
+  padding:.3rem .7rem;border-radius:2px;transition:all .3s;
+  display:inline-block;margin-bottom:.6rem;
+}
+.guide-open-btn:hover{color:var(--gold);border-color:rgba(201,168,76,.5)}
+/* ── SETTINGS MODAL ────────────────────────── */
+#settings-modal{
+  display:none;position:fixed;inset:0;z-index:500;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;
+}
+#settings-modal.open{display:flex}
+.modal-box{
+  background:var(--bg2);border:1px solid rgba(201,168,76,.28);
+  border-radius:4px;padding:2rem;width:min(480px,92vw);
+  position:relative;max-height:90vh;overflow-y:auto;
+}
+.modal-title{color:var(--gold);letter-spacing:.15em;margin-bottom:1.5rem;font-size:1rem}
+.modal-close{
+  position:absolute;top:.8rem;right:.8rem;
+  background:none;border:none;color:var(--text2);
+  cursor:pointer;font-size:1.2rem;line-height:1;
+}
+.modal-close:hover{color:var(--text)}
+.modal-label{font-size:.72rem;color:var(--text2);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.5rem}
+.modal-input{
+  width:100%;padding:.65rem .9rem;background:rgba(13,11,26,.9);
+  border:1px solid rgba(201,168,76,.28);color:var(--text);
+  font-family:var(--font-body);font-size:.88rem;border-radius:2px;
+  margin-bottom:1.2rem;outline:none;
+}
+.modal-input:focus{border-color:var(--gold)}
+/* 下拉框：下划线式 —— 去掉浏览器原生 3D 外观（appearance:none），透明无框、只留一条底线 + 自定义金色 ▾ */
+.modal-select{
+  width:100%;padding:.55rem 1.7rem .55rem .2rem;
+  background:transparent;color:var(--text);
+  font-family:var(--font-body);font-size:.9rem;
+  border:none;border-bottom:1px solid rgba(201,168,76,.4);border-radius:0;
+  margin-bottom:1.2rem;outline:none;cursor:pointer;
+  -webkit-appearance:none;-moz-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23c9a84c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right .1rem center;background-size:15px;
+  transition:border-color .2s;
+}
+.modal-select:hover{border-bottom-color:rgba(201,168,76,.65)}
+.modal-select:focus{border-bottom-color:var(--gold)}
+.modal-select::-ms-expand{display:none}
+option{background:var(--bg2)}
+.modal-hint{font-size:.75rem;color:var(--text2);line-height:1.6;margin-bottom:1.2rem}
+.model-info{margin:5px 0 12px;min-height:1.6rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.model-tag{display:inline-block;font-size:.67rem;padding:.15rem .5rem;border-radius:3px;font-family:sans-serif;letter-spacing:.02em;white-space:nowrap}
+.model-tag-free{background:rgba(76,175,80,.12);color:#81c784;border:1px solid rgba(76,175,80,.3)}
+.model-tag-paid{background:rgba(201,168,76,.08);color:rgba(201,168,76,.7);border:1px solid rgba(201,168,76,.2)}
+.model-tag-free-r{background:rgba(100,200,220,.1);color:#80cdd5;border:1px solid rgba(100,200,220,.25)}
+.model-desc-text{font-size:.73rem;color:var(--text2);line-height:1.4}
+.modal-save-btn{
+  display:block;width:100%;padding:.8rem;
+  background:rgba(201,168,76,.15);border:1px solid var(--gold);
+  color:var(--gold2);cursor:pointer;font-family:var(--font-body);
+  font-size:.9rem;letter-spacing:.12em;border-radius:2px;transition:all .3s;
+}
+.modal-save-btn:hover{background:rgba(201,168,76,.25)}
+.deck-style-btn.active{background:rgba(201,168,76,.18)!important;color:var(--gold)!important;border-color:var(--gold)!important}
+.persona-btn.active{background:rgba(201,168,76,.18)!important;color:var(--gold)!important;border-color:var(--gold)!important}
+
+/* ── HISTORY PANEL ─────────────────────────── */
+.hist-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.4rem}
+.hist-title{font-size:1.1rem;color:var(--gold);letter-spacing:.14em}
+.hist-clear{
+  padding:.35rem .9rem;border:1px solid rgba(192,57,43,.4);background:transparent;
+  color:var(--red);cursor:pointer;font-family:var(--font-body);font-size:.78rem;
+  border-radius:2px;transition:all .3s;
+}
+.hist-clear:hover{background:rgba(192,57,43,.12)}
+.hist-empty{text-align:center;color:var(--text2);padding:4rem 2rem;font-style:italic}
+.hi{
+  position:relative;
+  background:rgba(26,26,46,.6);border:1px solid rgba(201,168,76,.14);
+  border-radius:4px;padding:1.1rem 2.4rem 1.1rem 1.1rem;margin-bottom:.9rem;cursor:pointer;transition:border-color .3s;
+}
+.hi:hover{border-color:rgba(201,168,76,.38)}
+.hi-row1{display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem;gap:.6rem}
+.hi-date{font-size:.72rem;color:var(--text2)}
+.hi-spread{font-size:.72rem;color:var(--gold);letter-spacing:.08em}
+.hi-q{font-style:italic;color:var(--text);font-size:.88rem;margin-bottom:.4rem}
+.hi-cards{font-size:.72rem;color:var(--text2)}
+.hi-snippet{font-size:.76rem;color:var(--text2);margin-top:.45rem;line-height:1.5;opacity:.9}
+.hi-del{
+  position:absolute;top:.5rem;right:.5rem;width:1.6rem;height:1.6rem;line-height:1.5rem;text-align:center;
+  border:none;background:transparent;color:var(--text2);font-size:1.05rem;border-radius:4px;cursor:pointer;
+  opacity:.5;transition:all .2s;padding:0;
+}
+.hi-del:hover{opacity:1;color:#e57373;background:rgba(229,115,115,.12)}
+
+/* ── NOTIFICATION ──────────────────────────── */
+.notif{
+  position:fixed;bottom:2rem;right:2rem;
+  padding:.75rem 1.4rem;background:rgba(26,26,46,.96);
+  border:1px solid var(--gold);color:var(--gold2);
+  font-size:.82rem;border-radius:2px;
+  transform:translateY(80px);opacity:0;transition:all .4s;z-index:999;
+  pointer-events:none;
+}
+.notif.show{transform:translateY(0);opacity:1}
+
+/* ── Scrollbar ─────────────────────────────── */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:rgba(201,168,76,.28);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(201,168,76,.48)}
+
+/* ── Streaming cursor ──────────────────────── */
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+[data-streaming]::after{
+  content:'▋';display:inline;
+  animation:blink .9s step-end infinite;
+  color:var(--gold);margin-left:1px;
+}
+
+/* ── Gallery ───────────────────────────────── */
+.gallery-deck-section{
+  background:rgba(26,26,46,.55);border:1px solid rgba(201,168,76,.15);
+  border-radius:5px;margin-bottom:1.1rem;overflow:hidden;
+}
+.gallery-deck-header{
+  display:flex;align-items:center;gap:1rem;padding:1rem 1.2rem;cursor:pointer;
+  transition:background .25s;
+}
+.gallery-deck-header:hover{background:rgba(201,168,76,.06)}
+.gallery-deck-info{flex:1;min-width:0}
+.gallery-deck-name{color:var(--gold);font-size:.9rem;letter-spacing:.08em;margin-bottom:.25rem}
+.gallery-deck-year{color:var(--text2);font-size:.72rem}
+.gallery-deck-back-wrap{width:42px;height:70px;flex-shrink:0;border-radius:3px;overflow:hidden;border:1px solid rgba(201,168,76,.3)}
+.gallery-back-img{width:100%;height:100%;object-fit:cover;display:block}
+.gallery-back-css{
+  width:100%;height:100%;
+  background:linear-gradient(160deg,#0a1428,#160a26,#0d1b3e);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;color:rgba(201,168,76,.5);
+}
+.gallery-use-btn{
+  padding:.4rem .8rem;border:1px solid rgba(201,168,76,.4);
+  background:transparent;color:var(--gold2);cursor:pointer;
+  font-family:var(--font-body);font-size:.75rem;border-radius:2px;
+  flex-shrink:0;transition:all .25s;white-space:nowrap;
+}
+.gallery-use-btn:hover{background:rgba(201,168,76,.15);border-color:var(--gold)}
+.gallery-expand-icon{color:var(--text2);font-size:.85rem;flex-shrink:0}
+.gallery-deck-desc{
+  padding:0 1.2rem .8rem;color:var(--text2);font-size:.78rem;line-height:1.6;
+}
+.gallery-cards-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;
+  padding:.3rem 1.2rem 1rem;
+}
+.gallery-card-thumb{text-align:center}
+.gallery-card-thumb img{
+  width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:3px;
+  border:1px solid rgba(201,168,76,.2);display:block;
+  transition:transform .2s,box-shadow .2s;
+}
+.gallery-card-thumb img:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(201,168,76,.35)}
+.gallery-card-name{font-size:.62rem;color:var(--text2);margin-top:.3rem;line-height:1.2}
+.gallery-load-more{
+  width:100%;padding:.5rem;background:transparent;border:none;border-top:1px solid rgba(201,168,76,.12);
+  color:var(--text2);cursor:pointer;font-family:var(--font-body);font-size:.78rem;
+  transition:color .2s;margin:0;
+}
+.gallery-load-more:hover{color:var(--gold)}
+@media(max-width:600px){
+  .gallery-cards-grid{grid-template-columns:repeat(3,1fr)}
+  .gallery-deck-header{gap:.6rem;padding:.8rem}
+}
+
+/* ── Responsive ────────────────────────────── */
+
+@media(max-width:600px){
+  .spread-grid{grid-template-columns:repeat(2,1fr) !important}
+
+  /* 顶栏：竖排居中，让所有控件（含登录、⚙设置）都能显示、可点，不再被挤出屏幕 */
+  .header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.45rem .5rem;padding:.65rem .8rem}
+  .header-title{grid-column:1;grid-row:1;font-size:.95rem;text-align:left;letter-spacing:.06em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .header-actions{display:contents}
+  .header-primary{grid-column:1 / -1;grid-row:2;justify-content:space-evenly;gap:.35rem;width:100%}
+  .header-menu{grid-column:2;grid-row:1;justify-self:end}
+  .header-menu-popover{top:calc(100% + 3.2rem)}
+  .header-primary .nav-btn{padding:.4rem .75rem;font-size:.8rem}
+  #account-btn{max-width:34vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  /* 扇形牌堆：高度适配手机，支持横向滚动 */
+  #fan-stage-wrap{
+    height:240px;
+    overflow-x:auto;
+    overflow-y:visible;
+    -webkit-overflow-scrolling:touch;
+    scroll-snap-type:none;
+    scrollbar-width:none;
+  }
+  #fan-stage-wrap::-webkit-scrollbar{display:none}
+  #fan-stage{
+    min-width:max-content;
+    padding:0 16px;
+  }
+
+  /* 抽牌区：横向滚动，丝滑 */
+  :root{--card-w:58px;--card-h:100px;--card-w-lg:82px;--card-h-lg:141px}
+  #selected-row{
+    overflow-x:auto;
+    overflow-y:visible;
+    -webkit-overflow-scrolling:touch;
+    scroll-snap-type:x proximity;
+    scrollbar-width:none;
+    padding-bottom:.8rem;
+    padding-left:12px;
+    padding-right:12px;
+  }
+  #selected-row::-webkit-scrollbar{display:none}
+  #selected-row .selected-slots{
+    flex-wrap:nowrap;
+    padding-bottom:4px;
+  }
+  /* 让每张牌在滚动时有吸附感 */
+  #selected-row .card-flip-wrap{
+    scroll-snap-align:start;
+    flex-shrink:0;
+  }
+
+  /* 各阵法最小宽度（确保卡牌完整显示，可横滑） */
+  .selected-slots.celtic-layout,.selected-slots.lifetree-layout{min-width:500px}
+  .selected-slots.horseshoe-layout{min-width:580px}
+  .selected-slots.lovecross-layout,.selected-slots.twochoices-layout{min-width:290px}
+  .selected-slots.pentagram-layout{min-width:270px}
+
+  /* 单张解读卡片：字号适配手机 */
+  .rcb{padding:1rem}
+  .rcb-img{width:52px;height:90px}
+  .rcb-meaning,.rcb-meaning-cn{font-size:.84rem}
+
+  /* 牌面图片 label 字号 */
+  .cf-name-label{font-size:.6rem}
+}
+
+/* ── 展示字体：标题/主按钮用 Cinzel(拉丁)+宋体(中文)，更有"神谕"仪式感 ── */
+.intro-title,.header-title,.section-label,.shuffle-btn,.enter-btn,.lang-btn,
+.selected-label,.fan-instruction,#fan-instr,.chat-header-title,.spread-btn .sn{
+  font-family:var(--font-display);
+}
+.intro-title{letter-spacing:.14em;font-weight:600}
+.header-title{font-weight:600}
+
+/* ── 今日之牌面板：关闭 ✕ 固定在右上角，不再换行掉到左下 ── */
+#daily-banner{position:relative;padding-right:2.2rem}
+#daily-banner>button{position:absolute;top:.45rem;right:.5rem;padding:.2rem .4rem;opacity:.6;transition:opacity .2s}
+#daily-banner>button:hover{opacity:1}
+
+html[lang=en]{--font-body:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+html[lang=en] .modal-hint,html[lang=en] .model-info,html[lang=en] #deck-style-desc{font-size:.85rem;line-height:1.65}
+html[lang=en] .gallery-deck-name{letter-spacing:.02em;word-break:normal;overflow-wrap:normal}
+/* Readable English, flexible controls and scrollable dialogs on small screens. */
+html[lang=en] .section-label,html[lang=en] .modal-label,html[lang=en] .chat-header-title{letter-spacing:.035em;text-transform:none}
+html[lang=en] .header-title{letter-spacing:.06em;font-size:1rem}
+.header-primary>*{min-height:40px}
+.modal-box,.guide-box,#auth-modal>div,#verify-modal>div,#recharge-modal>div{box-sizing:border-box;max-height:calc(100dvh - 32px);overflow-y:auto;overscroll-behavior:contain;max-width:calc(100vw - 24px)}
+.modal-box input,.modal-box select,#auth-modal input,#verify-modal input,#recharge-modal input{font-size:16px!important}
+#auth-sub,#verify-sub,.hi-q,.summary-text,.chat-msg{overflow-wrap:anywhere}
+#language-switch{font-family:system-ui,sans-serif;letter-spacing:0}
+html[lang=en] .spread-btn .sn{line-height:1.35;white-space:normal}
+.gallery-deck-info{min-width:0}.gallery-deck-name{overflow-wrap:anywhere}.gallery-use-btn{flex-shrink:0}
+button:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+@media(max-width:480px){.spread-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.gallery-deck-header{display:grid;grid-template-columns:minmax(0,1fr) auto}.gallery-deck-back-wrap{grid-column:2;grid-row:1 / 3}.gallery-use-btn{grid-column:1;justify-self:start}.gallery-expand-icon{display:none}.gallery-deck-info{grid-column:1}.modal-box,.guide-box{padding:1.2rem}.qr-row{flex-wrap:wrap}.chat-input-row input{min-width:0;font-size:16px}}
+</style>
+<link rel="stylesheet" href="/typography.css?v=20261009b">
+<link rel="stylesheet" href="/experience.css?v=20261101a">
+<link rel="stylesheet" href="notices.css?v=20261016a">
+<link rel="stylesheet" href="/tour.css?v=20261101b">
+</head>
+<body>
+<canvas id="stars-canvas"></canvas>
+<div id="app">
+
+<!-- ═══════════════ INTRO ═══════════════ -->
+<div id="intro">
+  <div class="intro-glyph">☽✦☾</div>
+  <h1 class="intro-title">TAROT ORACLE</h1>
+  <p class="intro-sub" id="public-intro-sub">Random cards, thoughtful reflection</p>
+  <div class="lang-row">
+    <button class="lang-btn active" onclick="setLang('en')">English</button>
+    <button class="lang-btn" onclick="setLang('zh')">中文</button>
+  </div>
+  <button class="enter-btn" id="public-enter-btn" onclick="enterApp()">✦ ENTER THE ORACLE ✦</button>
+</div>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<div id="main">
+
+  <header class="header">
+    <div class="header-title">☽ TAROT ORACLE · 塔罗神谕 ☾</div>
+    <div class="header-actions">
+      <nav class="header-primary" aria-label="主要导航">
+        <button class="nav-btn active" id="btn-reading" onclick="showPanel('reading')" data-i18n-reading>占卜</button>
+        <button class="nav-btn" id="btn-history" onclick="showPanel('history')" data-i18n-history>历史</button>
+        <button class="nav-btn" id="account-btn" onclick="onAccountClick()" title="登录 / 账号">登录</button>
+      </nav>
+      <details class="header-menu" id="site-menu">
+        <summary id="site-menu-toggle" aria-label="更多菜单"><span id="site-menu-label">更多</span><span aria-hidden="true">⌄</span></summary>
+        <nav class="header-menu-popover" aria-label="更多导航">
+          <button type="button" class="menu-link" id="btn-notices" aria-haspopup="dialog" aria-controls="notice-dialog">公告</button>
+          <button class="menu-link" id="btn-gallery" onclick="showPanel('gallery')">牌库</button>
+          <a class="menu-link" id="btn-help" href="/guides.html">使用指南</a>
+          <a class="menu-link" id="btn-learn" data-learning-link href="/en/learn/" target="_blank" rel="opener">Learn ↗</a>
+          <a class="menu-link" id="btn-faq" href="https://docs.qq.com/doc/DRWNxQ21wTWp5TUxT" target="_blank" rel="noopener noreferrer">常见问题 · 腾讯文档 ↗</a>
+          <button class="menu-link" id="tour-replay" type="button">新手指南 / 重看教学</button>
+          <button class="menu-link settings-btn" id="menu-settings" onclick="openSettings()">设置</button>
+          <button class="menu-link" id="language-switch" onclick="setLang(document.documentElement.lang === 'en' ? 'zh' : 'en')" aria-label="切换语言">English</button>
+        </nav>
+      </details>
+    </div>
+  </header>
+
+  <button type="button" id="notice-summary" class="notice-summary" aria-haspopup="dialog" aria-controls="notice-dialog">
+    <span class="notice-summary-symbol" aria-hidden="true">✦</span>
+    <span id="notice-summary-label" class="notice-summary-label">公告</span>
+    <span id="notice-summary-title" class="notice-summary-title">服务异常与补偿说明</span>
+    <span id="notice-unread" class="notice-unread" hidden aria-hidden="true"></span>
+    <span class="notice-summary-arrow" aria-hidden="true">↗</span>
+  </button>
+
+  <!-- ─── Daily Card Banner ─── -->
+  <div id="daily-banner" style="display:none;max-width:860px;margin:.8rem auto 0;padding:.75rem 1.2rem;background:rgba(107,63,160,.13);border:1px solid rgba(155,111,212,.25);border-radius:4px;align-items:center;gap:1rem;flex-wrap:wrap;cursor:pointer" onclick="toggleDailyReading()">
+    <div style="font-size:.7rem;color:var(--text2);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap" id="daily-label">Today's Card</div>
+    <img id="daily-img" style="height:52px;border-radius:3px;border:1px solid rgba(201,168,76,.3);flex-shrink:0" src="" alt="">
+    <div style="flex:1;min-width:120px">
+      <div style="color:var(--gold);font-size:.88rem" id="daily-name"></div>
+      <div style="color:var(--text2);font-size:.75rem;margin-top:.2rem" id="daily-kw"></div>
+      <div style="font-size:.6rem;color:var(--text2);opacity:.5;margin-top:.15rem" id="daily-tap-hint"></div>
+    </div>
+    <button onclick="event.stopPropagation();dismissDaily()" style="background:none;border:none;color:var(--text2);cursor:pointer;font-size:1rem;padding:.2rem .4rem">✕</button>
+  </div>
+  <div id="daily-reading" style="display:none;max-width:860px;margin:0 auto;padding:.8rem 1.2rem;background:rgba(107,63,160,.08);border:1px solid rgba(155,111,212,.15);border-top:none;border-radius:0 0 4px 4px;font-size:.8rem;color:var(--text2);line-height:1.7"></div>
+
+  <!-- ─── Reading Panel ─── -->
+  <div id="panel-reading" class="panel active">
+    <div class="controls-bar">
+      <!-- Step 1: Question first -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem">
+        <div class="section-label" id="lbl-q" style="margin-bottom:0">Your Question</div>
+        <button class="guide-open-btn" id="guide-btn" onclick="openGuide()">☽ What is Tarot?</button>
+      </div>
+      <textarea class="question-input" id="q-input" rows="2"></textarea>
+
+      <!-- Step 2: Spread selection (shown after question, with recommendation) -->
+      <div id="spread-section">
+        <div class="section-label" id="lbl-spread">Choose Your Spread</div>
+        <div id="spread-recommend" class="spread-recommend" style="display:none"></div>
+        <div class="spread-grid" id="spread-grid"></div>
+        <button type="button" id="spread-more-btn" class="spread-more-btn" onclick="toggleMoreSpreads()" style="display:none"></button>
+        <div id="spread-desc" class="spread-desc"></div>
+      </div>
+
+      <label id="major-only-row" for="major-only-check"
+        style="display:flex;align-items:center;gap:.55rem;margin:.6rem 0 .2rem;cursor:pointer;color:var(--text2);font-size:.8rem;user-select:none">
+        <input type="checkbox" id="major-only-check" onchange="onMajorOnlyChange()"
+          style="width:16px;height:16px;accent-color:var(--gold);cursor:pointer;flex-shrink:0">
+        <span id="lbl-major-only">仅用 22 张大阿尔卡那抽牌 · Major Arcana only (22 cards)</span>
+      </label>
+
+      <label id="deep-reading-row" for="deep-reading-check"
+        style="display:none;align-items:center;gap:.55rem;margin:.5rem 0 .2rem;cursor:pointer;color:var(--gold2);font-size:.8rem;user-select:none">
+        <input type="checkbox" id="deep-reading-check" onchange="onDeepReadingChange()"
+          style="width:16px;height:16px;accent-color:var(--gold);cursor:pointer;flex-shrink:0">
+        <span id="lbl-deep-reading">🔮 深度解读（DeepSeek 思考模式，消耗 2 次付费额度）</span>
+      </label>
+
+      <p id="english-depth-note" class="depth-note" hidden>✦ In-depth interpretation included · uses your usual reading allowance.</p>
+      <button class="shuffle-btn" id="shuffle-btn" onclick="startShuffle()">✦ SHUFFLE &amp; SPREAD ✦</button>
+    </div>
+
+    <!-- 手机端：扇形展开 / 整齐排列 切换（电脑端隐藏） -->
+    <div id="fan-mode-toggle" style="display:none;justify-content:center;gap:.5rem;margin:.2rem 0 .5rem"></div>
+
+    <!-- Fan stage -->
+    <div id="fan-stage-wrap">
+      <p class="fan-instruction" id="fan-instr">Click a card to draw it into your reading</p>
+      <div id="fan-stage"></div>
+    </div>
+
+    <!-- Selected cards row -->
+    <div id="selected-row">
+      <p class="selected-label" id="sel-label">Your drawn cards</p>
+      <div class="selected-slots" id="selected-slots"></div>
+    </div>
+
+    <!-- Reveal button -->
+    <div style="text-align:center">
+      <button id="reveal-btn" onclick="revealAll()"></button>
+    </div>
+
+    <!-- Readings output -->
+    <div id="readings-output"></div>
+
+
+
+    <!-- AI Chat -->
+    <div id="chat-section">
+      <div class="chat-header">
+        <span class="chat-header-icon">🔮</span>
+        <span class="chat-header-title" id="chat-title">Ask the Oracle</span>
+        <span class="chat-header-model" id="chat-model-label"></span>
+      </div>
+      <div id="chat-messages"></div>
+      <div class="chat-input-row">
+        <input type="text" id="chat-input" placeholder="Ask a follow-up question…" onkeydown="if(event.key==='Enter')sendChat()">
+        <button id="chat-send" onclick="sendChat()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── History Panel ─── -->
+  <div id="panel-history" class="panel">
+    <div class="hist-top">
+      <div class="hist-title" id="hist-title">Reading History</div>
+      <button class="hist-clear" onclick="clearHistory()" id="hist-clear-btn">Clear All</button>
+    </div>
+    <div id="history-list"></div>
+  </div>
+
+  <!-- ─── Gallery Panel ─── -->
+  <div id="panel-gallery" class="panel">
+    <div style="text-align:center;margin-bottom:1.8rem">
+      <div style="color:var(--gold);letter-spacing:.2em;font-size:.9rem;margin-bottom:.5rem">✦ 牌库 · Card Gallery ✦</div>
+      <div style="color:var(--text2);font-size:.78rem;line-height:1.6">探索六套牌面风格 · 点击展开预览大阿尔卡那</div>
+    </div>
+    <div id="gallery-content"></div>
+  </div>
+
+</div><!-- #main -->
+</div><!-- #app -->
+
+<!-- ═══════════════ SETTINGS MODAL ═══════════════ -->
+<div id="settings-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeSettings()" aria-label="关闭 / Close">✕</button>
+    <div class="modal-title" id="modal-title">⚙ Oracle Settings</div>
+
+    <div class="modal-label">牌面风格 · Card Art Style</div>
+    <button type="button" class="deck-preview-link" id="deck-preview-link" onclick="previewDecks()">浏览全部牌组 →</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.7rem">
+      <button class="deck-style-btn" data-style="rws" onclick="setDeckStyle('rws')"
+        style="padding:.55rem .4rem;border:1px solid rgba(201,168,76,.3);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font-body);font-size:.78rem;border-radius:2px;transition:all .3s">
+        韦特牌 Rider-Waite
+      </button>
+      <button class="deck-style-btn" data-style="marseille" onclick="setDeckStyle('marseille')"
+        style="padding:.55rem .4rem;border:1px solid rgba(201,168,76,.3);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font-body);font-size:.78rem;border-radius:2px;transition:all .3s">
+        马赛塔罗 Marseille
+      </button>
+      <button class="deck-style-btn" data-style="xiyouji" onclick="setDeckStyle('xiyouji')"
+        style="padding:.55rem .4rem;border:1px solid rgba(201,168,76,.3);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font-body);font-size:.78rem;border-radius:2px;transition:all .3s">
+        西游记
+      </button>
+      <button class="deck-style-btn" data-style="cartoon" onclick="setDeckStyle('cartoon')"
+        style="padding:.55rem .4rem;border:1px solid rgba(201,168,76,.3);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font-body);font-size:.78rem;border-radius:2px;transition:all .3s">
+        卡通手绘风
+      </button>
+      <button class="deck-style-btn" data-style="hj" onclick="setDeckStyle('hj')"
+        style="padding:.55rem .4rem;border:1px solid rgba(201,168,76,.3);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font-body);font-size:.78rem;border-radius:2px;transition:all .3s">
+        黑金手绘风
+      </button>
+      <button class="deck-style-btn" data-style="cat" onclick="setDeckStyle('cat')"
+        style="padding:.55rem .4rem;border:1px solid rgba(201,168,76,.3);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font-body);font-size:.78rem;border-radius:2px;transition:all .3s">
+        喵喵塔罗
+      </button>
+    </div>
+    <div id="deck-style-desc" style="font-size:.72rem;color:var(--text2);margin-bottom:1.2rem;line-height:1.6"></div>
+
+    <div class="modal-label">神谕人设 · Oracle Persona</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem">
+      <button class="persona-btn" data-persona="mirror" onclick="setPersona('mirror')"
+        style="padding:.55rem .4rem;border:1px solid rgba(201,168,76,.3);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font-body);font-size:.78rem;border-radius:2px;transition:all .3s">玄镜 · Void Mirror</button>
+      <button class="persona-btn" data-persona="astrologer" onclick="setPersona('astrologer')"
+        style="padding:.55rem .4rem;border:1px solid rgba(201,168,76,.3);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font-body);font-size:.78rem;border-radius:2px;transition:all .3s">星官 · Astrologer</button>
+      <button class="persona-btn" data-persona="healer" onclick="setPersona('healer')"
+        style="padding:.55rem .4rem;border:1px solid rgba(201,168,76,.3);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font-body);font-size:.78rem;border-radius:2px;transition:all .3s">治愈者 · Healer</button>
+      <button class="persona-btn" data-persona="philosopher" onclick="setPersona('philosopher')"
+        style="padding:.55rem .4rem;border:1px solid rgba(201,168,76,.3);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font-body);font-size:.78rem;border-radius:2px;transition:all .3s">策士 · Strategist</button>
+    </div>
+    <div class="model-info" id="persona-info" style="margin-bottom:.8rem"></div>
+
+    <div class="modal-label" id="modal-lbl-ai">AI Reading Engine</div>
+    <select class="modal-select" id="ai-engine-select" onchange="onEngineChange()">
+      <option value="official">✨ 官方通道（免自带 Key·含免费额度·推荐）</option>
+      <optgroup label="―― 自带 API Key · 高级（需填你自己的付费 Key）――">
+        <option value="deepseek">DeepSeek</option>
+        <option value="zhipu">智谱 GLM</option>
+        <option value="openai">OpenAI</option>
+        <option value="claude">Claude (Anthropic)</option>
+        <option value="gemini">Gemini</option>
+        <option value="qwen">通义千问</option>
+        <option value="doubao">豆包</option>
+        <option value="custom">自定义 / 中转站（OpenAI 兼容）</option>
+      </optgroup>
+    </select>
+
+    <div id="official-section" style="display:none">
+      <div class="modal-hint" style="line-height:1.6">
+        ✨ <b>官方通道</b>：登录后直接用 DeepSeek 解读，无需任何设置。<br>
+        新用户免费体验，用完可充值次数或开通会员。付费后可开启「🔮 深度解读」（DeepSeek 思考模式，消耗 2 次）。
+      </div>
+      <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-top:.6rem">
+        <span id="official-quota" style="font-size:.85rem;color:var(--gold)"></span>
+        <button id="official-verify-btn" onclick="openVerify()" style="display:none;padding:.35rem .9rem;border:1px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer;border-radius:3px;font-size:.8rem;white-space:nowrap">✉ 验证邮箱得更多免费</button>
+        <button id="official-recharge-btn" onclick="openRecharge()" style="display:none;padding:.35rem .9rem;border:1px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer;border-radius:3px;font-size:.8rem;white-space:nowrap">充值 / 兑换码</button>
+        <button id="official-login-btn" onclick="openAuth()" style="display:none;padding:.35rem .9rem;border:1px solid var(--gold);background:transparent;color:var(--gold);cursor:pointer;border-radius:3px;font-size:.8rem;white-space:nowrap">登录 / 注册</button>
+      </div>
+    </div>
+
+    <div id="model-section" style="display:none">
+      <div class="modal-label" id="modal-lbl-model">Model</div>
+      <select class="modal-select" id="model-select" onchange="onModelChange()"></select>
+      <div class="model-info" id="model-info"></div>
+      <div class="modal-hint" style="margin-top:.3rem">模型的速度、费用和表达风格各有不同。可先用同一问题与牌阵比较，再选择适合自己的模型；可用性与价格以服务商账号为准。</div>
+    </div>
+
+    <div id="custom-model-section" style="display:none">
+      <div class="modal-label" id="modal-lbl-custom-model">自定义模型名 · Custom Model</div>
+      <input type="text" class="modal-input" id="custom-model-input" placeholder="e.g. gemini-3.8-flash · gpt-6-luna · claude-sonnet-5-5">
+      <div class="modal-hint" id="modal-hint-custom-model">填写后将覆盖上方下拉所选模型；可接入官方未列出的更多模型。留空则使用所选模型。</div>
+    </div>
+
+    <div id="api-url-section" style="display:none">
+      <div class="modal-label" id="modal-lbl-url">API 网址 / 中转站 · API URL</div>
+      <input type="text" class="modal-input" id="api-url-input"
+        placeholder="https://gcli.ggchan.dev/v1/chat/completions"
+        onblur="normalizeApiUrlInput(this)">
+      <div id="api-url-autocomplete-note" style="display:none;font-size:.72rem;color:var(--gold);margin:.25rem 0 0 .1rem">✓ <span id="api-url-autocomplete-text"></span></div>
+      <div class="modal-hint" id="modal-hint-url">直接粘贴域名即可，系统会自动补全为完整接口地址。<br>例：<code style="font-size:.75em;color:rgba(201,168,76,.8)">https://gcli.ggchan.dev</code> → <code style="font-size:.75em;color:rgba(201,168,76,.8)">https://gcli.ggchan.dev/v1/chat/completions</code></div>
+    </div>
+
+    <div id="api-key-section" style="display:none">
+      <div class="modal-label" id="modal-lbl-key">API Key</div>
+      <div style="position:relative">
+        <input type="password" class="modal-input" id="api-key-input" placeholder="sk-…" style="padding-right:2.6rem">
+        <button onclick="toggleApiKeyVisibility()" id="api-key-eye" title="显示/隐藏"
+          style="position:absolute;right:.6rem;top:0;bottom:0;margin:auto;height:1.2rem;background:none;border:none;cursor:pointer;color:var(--text2);font-size:.95rem;padding:0;line-height:1;display:flex;align-items:center">👁</button>
+      </div>
+      <div class="modal-hint" id="modal-hint">Your key is stored in this browser. Zhipu requests pass through this site to Zhipu without saving the key; other providers use the selected endpoint.</div>
+    </div>
+
+    <button class="modal-save-btn" onclick="saveSettings()" id="modal-save" style="margin-top:1.2rem">Save Settings</button>
+
+    <div style="margin-top:1rem;border-top:1px solid rgba(201,168,76,.15);padding-top:1rem">
+      <div class="modal-label" id="modal-lbl-backup">设置备份 · Backup</div>
+      <div style="display:flex;gap:.6rem">
+        <button onclick="exportSettings()"
+          style="flex:1;padding:.5rem;border:1px solid rgba(201,168,76,.3);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font-body);font-size:.8rem;border-radius:2px;transition:all .3s"
+          onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
+          onmouseout="this.style.borderColor='rgba(201,168,76,.3)';this.style.color='var(--text2)'">
+          ⬆ 导出设置
+        </button>
+        <button onclick="importSettings()"
+          style="flex:1;padding:.5rem;border:1px solid rgba(201,168,76,.3);background:transparent;color:var(--text2);cursor:pointer;font-family:var(--font-body);font-size:.8rem;border-radius:2px;transition:all .3s"
+          onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'"
+          onmouseout="this.style.borderColor='rgba(201,168,76,.3)';this.style.color='var(--text2)'">
+          ⬇ 导入设置
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ GUIDE MODAL ═══════════════ -->
+<div id="guide-modal" role="dialog" aria-modal="true" aria-labelledby="guide-title">
+  <div class="guide-box">
+    <button class="modal-close" id="guide-close" onclick="closeGuide()" aria-label="关闭">✕</button>
+    <div class="guide-heading"><button class="guide-back" id="guide-back" onclick="showGuideDirectory()" hidden>← 目录</button><h2 id="guide-title">使用指南</h2></div>
+    <p class="guide-intro" id="guide-intro">选择你现在需要的帮助</p>
+    <div class="guide-directory" id="guide-directory">
+      <button class="guide-topic" data-guide-topic="start" onclick="openGuideTopic('start')"><span><strong>开始抽牌</strong><small>30 秒上手</small></span><span class="guide-chevron" aria-hidden="true">›</span></button>
+      <button class="guide-topic" data-guide-topic="questions" onclick="openGuideTopic('questions')"><span><strong>问题与牌阵</strong><small>提问示例与自动推荐</small></span><span class="guide-chevron" aria-hidden="true">›</span></button>
+      <button class="guide-topic" data-guide-topic="reading" onclick="openGuideTopic('reading')"><span><strong>解读与追问</strong><small>看牌面依据，继续提问</small></span><span class="guide-chevron" aria-hidden="true">›</span></button>
+      <button class="guide-topic" data-guide-topic="account" onclick="openGuideTopic('account')"><span><strong>历史、账号与次数</strong><small>保存记录和查看额度</small></span><span class="guide-chevron" aria-hidden="true">›</span></button>
+    </div>
+    <div id="guide-detail" hidden></div>
+    <a class="guide-faq" id="guide-faq" href="https://docs.qq.com/doc/DRWNxQ21wTWp5TUxT" target="_blank" rel="noopener noreferrer">更多常见问题 · 腾讯文档 ↗</a>
+  </div>
+</div>
+
+<div id="auth-modal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:1rem">
+  <div style="background:#17152b;border:1px solid rgba(201,168,76,.3);border-radius:8px;max-width:360px;width:100%;padding:1.5rem;position:relative;color:#e8e3f0">
+    <button onclick="closeAuth()" aria-label="关闭 / Close" style="position:absolute;top:.5rem;right:.7rem;background:none;border:none;color:var(--text2);font-size:1.1rem;cursor:pointer">✕</button>
+    <div id="auth-title" style="color:var(--gold);letter-spacing:.12em;font-size:1rem;margin-bottom:.35rem">登录</div>
+    <div id="auth-sub" style="color:var(--text2);font-size:.75rem;margin-bottom:1rem;line-height:1.6">登录后，占卜历史与每日牌会云端保存、跨设备同步。</div>
+    <input id="auth-email" type="email" autocomplete="email" placeholder="邮箱" onkeydown="if(event.key==='Enter')submitAuth()" style="width:100%;box-sizing:border-box;padding:.6rem;margin-bottom:.6rem;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.3);border-radius:4px;color:inherit;font-size:.9rem">
+    <div id="auth-code-row" style="display:none;gap:.5rem;margin-bottom:.6rem">
+      <input id="auth-code" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="邮箱验证码" style="flex:1;min-width:0;box-sizing:border-box;padding:.6rem;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.3);border-radius:4px;color:inherit;font-size:.9rem">
+      <button id="auth-sendcode" type="button" onclick="sendAuthCode()" style="white-space:nowrap;padding:.6rem .7rem;background:transparent;border:1px solid var(--gold);color:var(--gold);border-radius:4px;cursor:pointer;font-size:.8rem">发送验证码</button>
+    </div>
+    <div id="auth-pw-row" style="position:relative;margin-bottom:.6rem;display:none">
+      <input id="auth-pw" type="password" autocomplete="current-password" placeholder="密码（至少 8 位）" onkeydown="if(event.key==='Enter')submitAuth()" style="width:100%;box-sizing:border-box;padding:.6rem;padding-right:2.4rem;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.3);border-radius:4px;color:inherit;font-size:.9rem">
+      <button type="button" id="auth-pw-toggle" onclick="togglePw()" aria-label="显示/隐藏密码" title="显示/隐藏密码" style="position:absolute;right:.4rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text2);cursor:pointer;font-size:1rem;padding:.25rem;line-height:1">👁</button>
+    </div>
+    <div id="auth-pw2-row" style="margin-bottom:.6rem;display:none">
+      <input id="auth-pw2" type="password" autocomplete="new-password" placeholder="再次输入密码" onkeydown="if(event.key==='Enter')submitAuth()" style="width:100%;box-sizing:border-box;padding:.6rem;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.3);border-radius:4px;color:inherit;font-size:.9rem">
+    </div>
+    <div id="auth-err" style="color:var(--red);font-size:.78rem;min-height:1.1rem;margin-bottom:.5rem"></div>
+    <button id="auth-submit" onclick="submitAuth()" style="width:100%;padding:.65rem;background:var(--gold);color:#1a1730;border:none;border-radius:4px;font-weight:bold;cursor:pointer;font-size:.9rem">继续</button>
+    <div id="auth-forgot-row" style="text-align:center;margin-top:.6rem;font-size:.78rem;display:none">
+      <a href="#" onclick="showReset();return false;" style="color:var(--text2)">忘记密码？</a>
+    </div>
+    <div id="auth-toggle-row" style="text-align:center;margin-top:.6rem;font-size:.78rem;color:var(--text2);display:none">
+      <a href="#" onclick="authToggleClick();return false;" id="auth-toggle-link" style="color:var(--gold)">← 换个邮箱</a>
+    </div>
+  </div>
+</div>
+
+<div id="verify-modal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:1rem" onclick="if(event.target===this)closeVerify()">
+  <div style="background:#17152b;border:1px solid rgba(201,168,76,.3);border-radius:8px;max-width:360px;width:100%;padding:1.5rem;position:relative;color:#e8e3f0">
+    <button onclick="closeVerify()" aria-label="关闭 / Close" style="position:absolute;top:.5rem;right:.7rem;background:none;border:none;color:var(--text2);font-size:1.1rem;cursor:pointer">✕</button>
+    <div id="verify-title" style="color:var(--gold);letter-spacing:.12em;font-size:1rem;margin-bottom:.35rem">验证邮箱</div>
+    <div id="verify-sub" style="color:var(--text2);font-size:.75rem;margin-bottom:1rem;line-height:1.6">验证邮箱后可解锁更多免费解读。验证码将发送到你的账号邮箱。</div>
+    <div style="display:flex;gap:.5rem;margin-bottom:.6rem">
+      <input id="verify-code" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="邮箱验证码" onkeydown="if(event.key==='Enter')submitVerify()" style="flex:1;min-width:0;box-sizing:border-box;padding:.6rem;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.3);border-radius:4px;color:inherit;font-size:.9rem">
+      <button id="verify-sendcode" type="button" onclick="sendVerifyCode()" style="white-space:nowrap;padding:.6rem .7rem;background:transparent;border:1px solid var(--gold);color:var(--gold);border-radius:4px;cursor:pointer;font-size:.8rem">发送验证码</button>
+    </div>
+    <div id="verify-err" style="color:var(--red);font-size:.78rem;min-height:1.1rem;margin-bottom:.5rem"></div>
+    <button id="verify-submit" onclick="submitVerify()" style="width:100%;padding:.65rem;background:var(--gold);color:#1a1730;border:none;border-radius:4px;font-weight:bold;cursor:pointer;font-size:.9rem">确认验证</button>
+    <div style="text-align:center;margin-top:.7rem;font-size:.78rem">
+      <a href="#" id="verify-later" onclick="closeVerify();return false;" style="color:var(--text2)">暂不验证</a>
+    </div>
+  </div>
+</div>
+
+<div id="recharge-modal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:1rem" onclick="if(event.target===this)closeRecharge()">
+  <div style="background:#17152b;border:1px solid rgba(201,168,76,.3);border-radius:8px;max-width:380px;width:100%;padding:1.5rem;position:relative;color:#e8e3f0">
+    <button onclick="closeRecharge()" aria-label="关闭 / Close" style="position:absolute;top:.5rem;right:.7rem;background:none;border:none;color:var(--text2);font-size:1.1rem;cursor:pointer">✕</button>
+    <div id="recharge-title" style="color:var(--gold);letter-spacing:.12em;font-size:1rem;margin-bottom:.5rem">充值 / 兑换码</div>
+    <div id="recharge-balance" style="font-size:.85rem;color:var(--gold);margin-bottom:1rem"></div>
+    <div id="first-order-sku" style="display:none"></div>
+    <!-- 中文：次数包 + 发卡网兑换码 -->
+    <div id="recharge-zh">
+      <div style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.18);border-radius:6px;padding:.7rem .8rem;margin-bottom:.8rem;font-size:.82rem;line-height:1.9">
+        <div style="color:var(--gold);margin-bottom:.2rem">📦 次数包（1 次 = 1 段解读 / 追问）</div>
+        体验 20 次 · <b>¥7</b><br>
+        常用 60 次 · <b>¥17</b>　<span style="color:var(--gold);font-size:.72rem">最划算</span>
+        <div style="color:var(--gold);margin-top:.5rem">👑 月会员 · <b>¥18</b> ／ 30 天（每日 20 次）</div>
+      </div>
+      <div style="font-size:.8rem;line-height:1.7;color:var(--text2);margin-bottom:.5rem"><b>如何购买：</b>点下方「<b style="color:var(--gold)">前往购买</b>」，支付宝 / 微信付款后立得兑换码，回此处输入兑换。</div>
+      <div id="recharge-buy" style="margin-bottom:1.1rem"></div>
+      <div style="border-top:1px solid rgba(201,168,76,.15);padding-top:.9rem">
+        <div style="font-size:.82rem;color:var(--gold);margin-bottom:.5rem">已有兑换码？输入兑换：</div>
+        <div style="display:flex;gap:.4rem;margin-bottom:.5rem">
+          <input id="redeem-input" type="text" autocomplete="off" placeholder="输入兑换码" onkeydown="if(event.key==='Enter')doRedeem()" style="flex:1;min-width:0;box-sizing:border-box;padding:.6rem;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.3);border-radius:4px;color:inherit;font-size:.9rem;letter-spacing:.06em">
+          <button type="button" onclick="pasteRedeemCode()" title="从剪贴板粘贴" style="flex:0 0 auto;padding:.6rem .7rem;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);border-radius:4px;color:var(--gold);cursor:pointer;font-size:.8rem;white-space:nowrap">📋 粘贴</button>
+        </div>
+        <div id="redeem-msg" style="font-size:.78rem;min-height:1.1rem;margin-bottom:.5rem"></div>
+        <button id="redeem-btn" onclick="doRedeem()" style="width:100%;padding:.6rem;background:var(--gold);color:#1a1730;border:none;border-radius:4px;font-weight:bold;cursor:pointer;font-size:.9rem">兑换</button>
+      </div>
+      <div style="border-top:1px solid rgba(201,168,76,.15);margin-top:.9rem;padding-top:.7rem;font-size:.72rem;color:var(--text2);line-height:1.8">
+        售后 / 咨询：小红书私信「<span style="color:var(--gold)">桥下秋水</span>」(1539817236) 或邮箱 <span style="color:var(--gold)">liuqiaoyi671@gmail.com</span>
+      </div>
+    </div>
+    <!-- 英文：USD 定价 + 即将上线候补名单（由 renderEnRecharge() 填充） -->
+    <div id="recharge-en" style="display:none"></div>
+  </div>
+</div>
+
+<div class="notif" id="notif"></div>
+
+<footer style="text-align:center;padding:1.6rem 1rem 2.2rem;color:var(--text2);font-size:.68rem;line-height:1.7;opacity:.72">
+  <span id="public-footer-note">Tarot for entertainment and reflection. AI interpretations can be mistaken; your decisions remain yours.</span><br>
+  <a data-learning-link href="/en/learn/" target="_blank" rel="opener" style="color:var(--gold)">Learn ↗</a> · <a href="/about.html" style="color:var(--gold)">About · 关于</a> · <a href="/privacy.html" style="color:var(--gold)">Privacy · 隐私</a> · <a href="/contact.html" style="color:var(--gold)">Contact · 联系</a>
+</footer>
+
+<script src="html2canvas.min.js"></script>
+<!-- 自有 JS 带版本号：每次发版改这个 ?v= 就强制浏览器/CDN 拉取新代码，杜绝旧缓存导致的“改了没生效” -->
+<script src="waite.js?v=20261004a"></script>
+<script src="waite_cn.js?v=20261004a"></script>
+<script src="cards.js?v=20261009b"></script>
+<script src="xyj_lore.js?v=20261004a"></script>
+<script src="reading-html.js?v=20261005a"></script>
+<script src="reading-history.js?v=20261005b"></script>
+<script src="modern-card-notes.js?v=20261006b"></script>
+<script src="book-references-client.js?v=20261009b"></script>
+<script src="draw-methods.js?v=20261009b"></script>
+<script src="app.js?v=20261026a"></script>
+<script src="app-localization.js?v=20261015b"></script>
+<script src="app-navigation.js?v=20261015b"></script>
+<script src="notices-data.js?v=20261101a"></script>
+<script src="notices.js?v=20261016a"></script>
+<script src="analytics.js?v=20261004a"></script>
+<script src="select-fit.js?v=20261101a"></script>
+<script src="tour-copy.js?v=20261101b"></script>
+<script src="tour-steps.js?v=20261101b"></script>
+<script src="tour.js?v=20261101b"></script>
+</body>
+</html>

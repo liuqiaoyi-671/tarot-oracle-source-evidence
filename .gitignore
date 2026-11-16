@@ -1,0 +1,19 @@
+# Local credentials and runtime state
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+.wrangler/
+.claude/
+.codex/
+node_modules/
+dist/
+output/
+tmp/
+*.sqlite
+*.sqlite3
+*.db
+.DS_Store
+wrangler.jsonc
+adsense.config.json

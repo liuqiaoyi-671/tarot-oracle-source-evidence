@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>塔罗神谕 · 数据看板</title>
+<style>
+  :root{
+    --bg:#0d0b1a; --bg2:#13102a; --panel:#171334; --line:rgba(201,168,76,.18);
+    --gold:#c9a84c; --gold2:#e8c97a; --text:#e8e0f0; --text2:#a090c0;
+    --green:#4caf7d; --red:#c0564b; --purple:#9b6fd4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Georgia,"Microsoft YaHei",serif;line-height:1.5;padding:1.2rem;max-width:1100px;margin:0 auto}
+  h1{font-size:1.4rem;font-weight:normal;color:var(--gold);letter-spacing:.08em}
+  h2{font-size:.95rem;font-weight:normal;color:var(--gold2);letter-spacing:.05em;margin:0 0 .7rem}
+  .sub{color:var(--text2);font-size:.8rem;margin-top:.2rem}
+  header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:.8rem;margin-bottom:1.2rem;padding-bottom:1rem;border-bottom:1px solid var(--line)}
+  .controls{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap}
+  select,input,button{font-family:inherit;font-size:.82rem;background:var(--bg2);color:var(--text);border:1px solid var(--line);border-radius:5px;padding:.4rem .6rem}
+  button{cursor:pointer;color:var(--gold)}
+  button:hover{border-color:var(--gold)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:1rem 1.1rem;margin-bottom:1rem}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.7rem;margin-bottom:1rem}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:.8rem .9rem}
+  .kpi .v{font-size:1.55rem;color:var(--gold2)}
+  .kpi .l{font-size:.75rem;color:var(--text2);margin-top:.15rem}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  @media(max-width:720px){.cols{grid-template-columns:1fr}}
+  /* funnel */
+  .frow{margin-bottom:.55rem}
+  .fhead{display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:.2rem}
+  .fhead .r{color:var(--text2)}
+  .fbar{position:relative;height:26px;background:var(--bg2);border-radius:5px;overflow:hidden}
+  .ffill{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,rgba(201,168,76,.85),rgba(155,111,212,.65));display:flex;align-items:center;padding-left:.5rem;font-size:.75rem;color:#0d0b1a;white-space:nowrap}
+  .fmeta{font-size:.72rem;color:var(--text2);margin-top:.15rem;display:flex;gap:1rem}
+  .fmeta .drop{color:var(--red)}
+  /* simple bar list */
+  .blist{display:flex;flex-direction:column;gap:.4rem}
+  .bitem{font-size:.8rem}
+  .bitem .top{display:flex;justify-content:space-between;margin-bottom:.15rem}
+  .btrack{height:9px;background:var(--bg2);border-radius:5px;overflow:hidden}
+  .bfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--purple))}
+  .muted{color:var(--text2)}
+  /* 变现/转化 迷你漏斗 */
+  .mfs{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+  @media(max-width:720px){.mfs{grid-template-columns:1fr}}
+  .mf .mf-title{font-size:.82rem;color:var(--gold2);margin-bottom:.1rem}
+  .mf .mf-desc{font-size:.7rem;color:var(--text2);margin-bottom:.6rem}
+  .mf .mf-row{margin-bottom:.5rem}
+  .mf .mf-head{display:flex;justify-content:space-between;align-items:baseline;font-size:.8rem;margin-bottom:.18rem}
+  .mf .mf-head .n{color:var(--gold2)}
+  .mf .mf-head .cv{color:var(--green);font-size:.72rem;margin-left:.35rem}
+  .mf .mf-head .cv.lo{color:var(--red)}
+  .mf .btrack{height:9px;background:var(--bg2);border-radius:5px;overflow:hidden}
+  .mf .bfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--purple))}
+  /* daily chart */
+  .chart{display:flex;align-items:flex-end;gap:3px;height:120px;padding-top:.4rem}
+  .chart .bar{flex:1;background:linear-gradient(180deg,var(--gold2),var(--purple));border-radius:3px 3px 0 0;min-height:2px;position:relative}
+  .chart .bar:hover::after{content:attr(data-tip);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#000;color:var(--gold2);font-size:.7rem;padding:.2rem .4rem;border-radius:4px;white-space:nowrap;margin-bottom:3px}
+  .axis{display:flex;justify-content:space-between;font-size:.68rem;color:var(--text2);margin-top:.3rem}
+  #err{color:var(--red);font-size:.85rem;margin-top:.5rem}
+  #gate{max-width:420px;margin:4rem auto;text-align:center}
+  #gate input{width:100%;margin:.8rem 0;text-align:center;letter-spacing:.1em}
+  .note{font-size:.72rem;color:var(--text2);margin-top:1.2rem;line-height:1.7}
+  .hide{display:none}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <h1>✦ 数据看板</h1>
+  <p class="sub">请输入访问密钥（部署方设置的 STATS_KEY）</p>
+  <input id="key-input" type="password" placeholder="STATS_KEY" autocomplete="off">
+  <button onclick="saveKey()">进入</button>
+  <div id="gate-err" style="color:var(--red);font-size:.8rem;margin-top:.6rem"></div>
+  <p class="note">若你用管理员邮箱登录了主站，且部署方已设置 ADMIN_EMAIL，也可直接留空点「进入」。</p>
+</div>
+
+<div id="dash" class="hide">
+  <header>
+    <div>
+      <h1>✦ 塔罗神谕 · 数据看板</h1>
+      <div class="sub" id="range-sub"></div>
+    </div>
+    <div class="controls">
+      <select id="days" onchange="load()">
+        <option value="1" selected>今天/24h</option>
+        <option value="7">近 7 天</option>
+        <option value="30">近 30 天</option>
+        <option value="90">近 90 天</option>
+      </select>
+      <button onclick="load()">刷新</button>
+      <button onclick="logout()">退出</button>
+    </div>
+  </header>
+
+  <div id="err"></div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="card">
+    <h2>转化漏斗 · 各环节到达率与退出点</h2>
+    <div class="sub" style="margin-bottom:.8rem">条形＝到达该环节（含更深）的会话占比；下方红字＝<b>恰好止步于此</b>的会话数（退出点）；灰字＝该环节平均停留。</div>
+    <div id="funnel"></div>
+  </div>
+
+  <div class="card">
+    <h2>变现与转化漏斗 · 按会话去重</h2>
+    <div class="sub" style="margin-bottom:.8rem">每条链路在<b>同一次访问</b>内统计；括号里是相对<b>上一步</b>的转化率。撞墙是商业拦截、非故障。</div>
+    <div class="mfs">
+      <div class="mf" id="mf-money"></div>
+      <div class="mf" id="mf-guest"></div>
+      <div class="mf" id="mf-sat"></div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="card">
+      <h2>各环节平均停留时长</h2>
+      <div id="dwell" class="blist"></div>
+    </div>
+    <div class="card">
+      <h2>每日会话趋势</h2>
+      <div class="chart" id="daily"></div>
+      <div class="axis" id="daily-axis"></div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="card"><h2>牌阵偏好（完成抽牌）</h2><div id="bd-spread" class="blist"></div></div>
+    <div class="card"><h2>解读引擎</h2><div id="bd-engine" class="blist"></div></div>
+    <div class="card"><h2>牌面风格</h2><div id="bd-deck" class="blist"></div></div>
+    <div class="card"><h2>设备 / 语言</h2><div id="bd-devlang" class="blist"></div></div>
+    <div class="card"><h2>来源 Referrer</h2><div id="bd-ref" class="blist"></div></div>
+    <div class="card"><h2>转化 / 互动</h2><div id="conv" class="blist"></div></div>
+  </div>
+
+  <p class="note">
+    说明：会话＝一次访问（页面会话）；访客＝去重的匿名浏览器。停留时长按同会话内相邻事件的时间差计算，封顶 30 分钟以剔除挂机极端值；最后一个环节的时长依赖离开页面时补发的 exit 信标，个别浏览器可能丢失。数据仅含匿名行为，不含邮箱/问题正文等隐私信息。
+  </p>
+</div>
+
+<script>
+var KEY_LS = 'tarot-stats-key';
+function getKey(){ try{ return localStorage.getItem(KEY_LS) || ''; }catch(e){ return ''; } }
+function saveKey(){
+  var v = document.getElementById('key-input').value.trim();
+  try{ localStorage.setItem(KEY_LS, v); }catch(e){}
+  boot();
+}
+function logout(){ try{ localStorage.removeItem(KEY_LS); }catch(e){} location.reload(); }
+
+function fmtMs(ms){
+  ms = ms || 0;
+  if(ms < 1000) return ms + 'ms';
+  var s = ms/1000;
+  if(s < 60) return s.toFixed(s<10?1:0) + 's';
+  var m = Math.floor(s/60); s = Math.round(s%60);
+  return m + 'm' + (s?(' '+s+'s'):'');
+}
+function esc(s){ return String(s==null?'':s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+
+function barList(el, rows, opts){
+  opts = opts || {};
+  var arr = (rows||[]).map(function(r){ return { k: r.k!=null?r.k:r.stage, c: r.c!=null?r.c:(r.v||0) }; });
+  var max = arr.reduce(function(a,b){ return Math.max(a,b.c); }, 0) || 1;
+  el.innerHTML = arr.length ? arr.map(function(r){
+    var label = opts.label ? (opts.label[r.k]||r.k) : r.k;
+    return '<div class="bitem"><div class="top"><span>'+esc(label)+'</span><span class="muted">'+r.c+(opts.suffix||'')+'</span></div>'+
+      '<div class="btrack"><div class="bfill" style="width:'+(r.c/max*100)+'%"></div></div></div>';
+  }).join('') : '<div class="muted" style="font-size:.8rem">暂无数据</div>';
+}
+
+async function load(){
+  var days = document.getElementById('days').value;
+  var errEl = document.getElementById('err'); errEl.textContent = '';
+  var headers = {};
+  var k = getKey(); if(k) headers['x-stats-key'] = k;
+  var res, data;
+  try{
+    res = await fetch('/api/stats?days='+days, { headers: headers, credentials:'same-origin' });
+    data = await res.json();
+  }catch(e){ errEl.textContent = '请求失败：'+e.message; return; }
+  if(!res.ok){ errEl.textContent = data.error || ('HTTP '+res.status);
+    if(res.status===401){ // 密钥无效，回到门禁
+      document.getElementById('dash').classList.add('hide');
+      document.getElementById('gate').classList.remove('hide');
+      document.getElementById('gate-err').textContent = data.error || '未授权';
+    }
+    return;
+  }
+  render(data);
+}
+
+function render(d){
+  document.getElementById('range-sub').textContent =
+    '近 '+d.range_days+' 天 · 更新于 '+new Date(d.generated_at).toLocaleString()+' · 快照每 3 小时更新，所有范围合计每天最多更新 8 次';
+  if(d.cache && d.cache.status==='stale') document.getElementById('err').textContent = '为保护登录与解读，当前显示历史快照。'+(d.cache.reason==='range_too_large'?'该范围数据过多，请缩短时间范围。':'已达计算限制或统计暂不可用，请稍后再试。');
+
+  var o = d.overview;
+  var engDen = (o.readings_done||0) + (o.readings_error||0);
+  var engineRate = engDen ? (o.readings_done/engDen*100).toFixed(1)+'%' : '—';     // 引擎健康：不含付费墙/跑路
+  var doneRate = o.readings_requested ? (o.readings_done/o.readings_requested*100).toFixed(1)+'%' : '—'; // 发起→看到结果
+  var kpis = [
+    ['会话数', o.sessions, '一次访问（页面会话）去重后的数量。'],
+    ['独立访客', o.visitors, '去重的匿名浏览器（跨会话识别回访）。'],
+    ['登录用户', o.logged_in_users, '区间内有登录态的去重用户数。'],
+    ['解读完成', o.readings_done, '真正出了解读结果的次数（reading_done）。'],
+    ['引擎成功率', engineRate, '= 解读完成 ÷ (完成 + 技术失败)。反映引擎/网络是否健康，应接近 100%。不含付费墙、不含用户中途离开。'],
+    ['解读完成率', doneRate, '= 解读完成 ÷ 解读发起。发起后真正看到结果的比例，受付费墙拦截和用户中途离开影响，偏低属正常，不代表引擎有问题。'],
+    ['解读失败', o.readings_error, '真正的技术报错次数（reading_error），不含付费墙。'],
+    ['撞付费墙', o.readings_paywall, '区间内触达额度/付费墙的次数（paywall_shown），是商业拦截、非故障。'],
+  ];
+  document.getElementById('kpis').innerHTML = kpis.map(function(x){
+    var tip = x[2] ? ' title="'+esc(x[2])+'"' : '';
+    return '<div class="kpi"'+tip+'><div class="v">'+x[1]+'</div><div class="l">'+x[0]+'</div></div>';
+  }).join('');
+
+  // 漏斗
+  var start = (d.funnel[0] && d.funnel[0].reached) || 1;
+  document.getElementById('funnel').innerHTML = d.funnel.map(function(f, i){
+    var w = start ? (f.reached/start*100) : 0;
+    var stepPct = '';
+    if(i>0){ var prev=d.funnel[i-1].reached; stepPct = prev? '↳ 上一步转化 '+(f.reached/prev*100).toFixed(0)+'%' : ''; }
+    return '<div class="frow"><div class="fhead"><span>'+(i+1)+'. '+esc(f.label)+'</span>'+
+      '<span class="r">'+f.reached+' 会话 · '+f.pct_of_start+'%</span></div>'+
+      '<div class="fbar"><div class="ffill" style="width:'+Math.max(w,1)+'%">'+f.pct_of_start+'%</div></div>'+
+      '<div class="fmeta"><span class="drop">止步于此 '+f.exited+'</span>'+
+      '<span>平均停留 '+fmtMs(f.avg_dwell_ms)+'</span>'+
+      (stepPct?'<span class="muted">'+stepPct+'</span>':'')+'</div></div>';
+  }).join('');
+
+  // 停留
+  barListMs(document.getElementById('dwell'), d.dwell);
+
+  // 每日趋势
+  var daily = d.daily||[];
+  var dmax = daily.reduce(function(a,b){return Math.max(a,b.c);},0)||1;
+  document.getElementById('daily').innerHTML = daily.length? daily.map(function(x){
+    return '<div class="bar" style="height:'+(x.c/dmax*100)+'%" data-tip="'+x.d+'：'+x.c+' 会话"></div>';
+  }).join('') : '<div class="muted" style="font-size:.8rem">暂无数据</div>';
+  var ax = document.getElementById('daily-axis');
+  ax.innerHTML = daily.length? ('<span>'+daily[0].d.slice(5)+'</span><span>'+daily[daily.length-1].d.slice(5)+'</span>') : '';
+
+  // 分布
+  barList(document.getElementById('bd-spread'), d.breakdown.spread, {suffix:' 次'});
+  barList(document.getElementById('bd-engine'), d.breakdown.engine, {suffix:' 次'});
+  barList(document.getElementById('bd-deck'), d.breakdown.deck, {suffix:' 会话'});
+  var devlang = (d.breakdown.device||[]).map(function(r){return {k:'📱/💻 '+r.k, c:r.c};})
+    .concat((d.breakdown.lang||[]).map(function(r){return {k:'🗣 '+r.k, c:r.c};}));
+  barList(document.getElementById('bd-devlang'), devlang, {suffix:' 会话'});
+  barList(document.getElementById('bd-ref'), d.breakdown.referrer, {suffix:' 会话'});
+
+  var c = d.conversions;
+  barList(document.getElementById('conv'), [
+    {k:'撞到付费/额度墙', c:c.paywall_shown},
+    {k:'注册/登录成功', c:c.auth_success},
+    {k:'打开充值/兑换', c:c.recharge_open},
+    {k:'兑换成功', c:c.redeem_success},
+    {k:'打开打赏', c:c.support_open},
+    {k:'保存/导出解读', c:c.save_reading},
+  ], {suffix:' 次'});
+
+  // 变现 / 游客转化 / 满意度 三条按会话去重的漏斗
+  var f = d.funnels || {};
+  var m = f.monetization||{}, g = f.guest_to_register||{}, s = f.satisfaction||{};
+  funnelMini(document.getElementById('mf-money'), '变现', '撞墙 → 打开充值 → 兑换成功', [
+    {label:'撞付费墙', c:m.paywall_sessions||0},
+    {label:'打开充值/兑换', c:m.opened_recharge||0},
+    {label:'兑换成功', c:m.redeemed||0},
+  ]);
+  funnelMini(document.getElementById('mf-guest'), '游客 → 注册', '撞墙游客里有多少转成注册', [
+    {label:'撞付费墙', c:g.paywall_sessions||0},
+    {label:'随后注册', c:g.registered_after_paywall||0},
+  ]);
+  funnelMini(document.getElementById('mf-sat'), '解读满意度', '看到解读 → 保存/导出', [
+    {label:'看到解读', c:s.reading_sessions||0},
+    {label:'保存/导出', c:s.saved||0},
+  ]);
+}
+
+// 迷你漏斗：steps=[{label,c}]，括号内为相对上一步的转化率（<30% 标红提示卡点）
+function funnelMini(el, title, desc, steps){
+  if(!el) return;
+  var max = steps.reduce(function(a,b){return Math.max(a,b.c);},0)||1;
+  var rows = steps.map(function(st,i){
+    var cv = '';
+    if(i>0){ var p=steps[i-1].c; var r=p?Math.round(st.c/p*100):0; cv='<span class="cv'+(r<30?' lo':'')+'">('+r+'%)</span>'; }
+    return '<div class="mf-row"><div class="mf-head"><span>'+esc(st.label)+'</span>'+
+      '<span><span class="n">'+st.c+'</span>'+cv+'</span></div>'+
+      '<div class="btrack"><div class="bfill" style="width:'+Math.max(st.c/max*100,1)+'%"></div></div></div>';
+  }).join('');
+  el.innerHTML = '<div class="mf-title">'+esc(title)+'</div><div class="mf-desc">'+esc(desc)+'</div>'+rows;
+}
+
+function barListMs(el, rows){
+  var arr = (rows||[]).filter(function(r){return r.avg_ms>0;});
+  var max = arr.reduce(function(a,b){return Math.max(a,b.avg_ms);},0)||1;
+  el.innerHTML = arr.length? arr.map(function(r){
+    return '<div class="bitem"><div class="top"><span>'+esc(r.label)+'</span><span class="muted">'+fmtMs(r.avg_ms)+'</span></div>'+
+      '<div class="btrack"><div class="bfill" style="width:'+(r.avg_ms/max*100)+'%"></div></div></div>';
+  }).join('') : '<div class="muted" style="font-size:.8rem">暂无数据</div>';
+}
+
+function boot(){
+  document.getElementById('gate').classList.add('hide');
+  document.getElementById('dash').classList.remove('hide');
+  load();
+}
+
+// 有密钥就直接进；没有也允许进（可能走 ADMIN_EMAIL 登录态），失败会被 401 弹回门禁
+(function(){
+  if(getKey()) boot();
+})();
+</script>
+</body>
+</html>
